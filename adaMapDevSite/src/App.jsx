@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="App">
+      {/* Sidebar */}
+      <div className="sidebar">
+        <input
+          type="text"
+          placeholder="Search for a place or an address"
+          style={{
+            padding: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "5px",
+          }}
+        />
+        <button><span>♿</span> Wheelchair Accessible</button>
+        <button><span>🚪</span> Accessible Door</button>
+        <button><span>📉</span> Low Elevation Change</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+
+      {/* Map Container */}
+      <div className="map-container">
+        <div className="map-placeholder">Map will load here</div>
+
+        {/* Action Buttons */}
+        <div className="action-buttons">
+          <button title="Login">↩</button>
+          <button title="Zoom In">+</button>
+          <button title="Zoom Out">-</button>
+          <button title="Current Location">▶</button>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;

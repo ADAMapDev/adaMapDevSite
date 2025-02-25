@@ -13,15 +13,15 @@ readme.md formatting syntax link: https://docs.github.com/en/get-started/writing
 
 ## Technical Stack
 - frontend: React.js
-- backend:
+- backend: Flask
 - database: SQL server for user data and preferences
 - APIs/Libraries: Google Maps API
 
 ## System Architecture:
-in deep overview of the application's architecture (frontend, backend, database, external API integrations)
+in-depth overview of the application's architecture (frontend, backend, database, external API integrations)
 
 ## Installation and Setup
-step by step on how to use the application such as selecting points on the map, viewing routes, managing user preferences etc
+step-by-step on how to use the application such as selecting points on the map, viewing routes, managing user preferences etc
 
 ## Accessibility
 details on how the application meets accessibility standards ((WCAG 2.1) and the features provided for users with disabilities
@@ -36,12 +36,26 @@ details on how the application meets accessibility standards ((WCAG 2.1) and the
 - how the project meets learning objectives, such as designing real world situations and incorporating best practices
 
 ## Contributors
-names and roles of team mamebrs
+Spencer Williams: Team Leader, Documentation
 
-## Acknowledgemennts
+Justin Connick: UX, Backend
+
+Megan Ingram: Frontend, Documentation
+
+Derrick Novak: Backend
+
+Emily Zhu: Frontend, Backend
+
+
+## Acknowledgements
 - mention of any support received
 
 ## Reference
 (links, documentations of APIs, libraries and resources we used)
-- Github Writing: [Writing & Formatting Syntax for README.md ](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+- Github Writing: [writing & formatting syntax for README.md ](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+- Google Maps:
+- Web Speech API: [voice recognition and controls](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
+- Leaflet: [easy-to-use map features](https://leafletjs.com/)
+- Mapbox: [high contrast modes and colorblind-friendly](https://www.mapbox.com/)
+- ResponsiveVoice: [text-to-speech](https://responsivevoice.org/)
 
