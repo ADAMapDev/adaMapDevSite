@@ -13,15 +13,15 @@ readme.md formatting syntax link: https://docs.github.com/en/get-started/writing
 
 ## Technical Stack
 - frontend: React.js
-- backend:
+- backend: Flask
 - database: SQL server for user data and preferences
 - APIs/Libraries: Google Maps API
 
 ## System Architecture:
-in deep overview of the application's architecture (frontend, backend, database, external API integrations)
+in-depth overview of the application's architecture (frontend, backend, database, external API integrations)
 
 ## Installation and Setup
-step by step on how to use the application such as selecting points on the map, viewing routes, managing user preferences etc
+step-by-step on how to use the application such as selecting points on the map, viewing routes, managing user preferences etc
 
 ## Accessibility
 details on how the application meets accessibility standards ((WCAG 2.1) and the features provided for users with disabilities
