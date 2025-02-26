@@ -1,5 +1,6 @@
 
 import "./App.css";
+import WalkingRouteMap from "./WalkingRouteMap";
 
 function App() {
   return (
@@ -22,7 +23,13 @@ function App() {
 
       {/* Map Container */}
       <div className="map-container">
-        <div className="map-placeholder">Map will load here</div>
+        <div className="map-placeholder"> 
+          {/* Placed the map function here for now
+              Testing it out by manually adding the 
+              coordinates into the parameters */}
+          <WalkingRouteMap
+            origin={{ lat: 34.03925920478031, lng: -84.58182061858527 }}
+            destination={{ lat: 34.03868425275164, lng: -84.58055958373744 }}/></div>
 
         {/* Action Buttons */}
         <div className="action-buttons">
@@ -31,6 +38,7 @@ function App() {
           <button title="Zoom Out">-</button>
           <button title="Current Location">▶</button>
         </div>
+        
       </div>
     </div>
   );
