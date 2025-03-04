@@ -151,7 +151,7 @@ const RouteMap = ({origin, destination}) => {
     <LoadScript googleMapsApiKey={apiKey} libraries={["geometry"]}>
       <GoogleMap
         onLoad={handleMapLoad}
-        center={{ lat: 34.028487707942915, lng: -84.61515130111765}}
+        // center={{ lat: 34.028487707942915, lng: -84.61515130111765}}
         zoom={12}
         mapContainerStyle={{ width: "600px", height: "600px"}}
         >
