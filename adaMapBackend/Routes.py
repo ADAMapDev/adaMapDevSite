@@ -8,6 +8,7 @@ load_dotenv()
 
 get_routes = Blueprint('/get_route', __name__)
 get_api_keys = Blueprint('/get_api_key', __name__)
+get_elevations = Blueprint('/get_elevation', __name__)
 
 app = Flask(__name__)
 CORS(app)
@@ -55,11 +56,49 @@ def get_route():
     if "routes" not in data or not data["routes"]:
         return jsonify({"error": "Missing route parameters"}), 401
 
-    # Gather the polyline which will be returned
+    route = data["routes"][0]
     polyline = data["routes"][0]["overview_polyline"]["points"]
+    legs = route["legs"]
 
-    # Send the polyline to the frontend to decode
-    return jsonify({"polyline": polyline}), 200
+    return jsonify({
+        "polyline": polyline,
+        "routes": [{
+            "legs": [{
+                "steps": [{
+                    "html_instructions": step["html_instructions"],
+                    "distance": step["distance"],
+                    "start_location": step["start_location"]
+                } for step in leg["steps"]]
+            } for leg in legs]
+        }]
+    }), 200
+
+
+    # # Send the polyline to the frontend to decode
+    # return jsonify({"polyline": polyline}), 200
+
+@get_elevations.route("/get-elevation", methods=['GET', 'OPTIONS'])
+def get_elevation():
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
+
+    print("lag", lat)
+    print("lng", lng)
+    if not lat or not lng:
+        return jsonify({"error": "Missing latitude or longitude"}), 400
+
+    elevation_url = f"https://maps.googleapis.com/maps/api/elevation/json?locations={lat},{lng}&key={os.getenv('api_key')}"
+
+    try:
+        response = requests.get(elevation_url)
+        data = response.json()
+
+        if data["status"] == "OK" and data["results"]:
+            elevation = data["results"][0]["elevation"]
+            return jsonify({"elevation": elevation}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 401
 
 if __name__ == "__main__":
     app.run(debug=True)
