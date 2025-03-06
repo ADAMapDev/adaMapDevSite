@@ -10,9 +10,12 @@ const RouteMap = ({origin, destination}) => {
   const [elevationChanges, setElevationChanges] = useState([]);
   const [steps, setSteps] = useState([]);
   const mapRef = useRef(null);
+  const [duration, setDuration] = useState("");
+  const [distance, setDistance] = useState("");
 
 
   const handleMapLoad = (map) => {
+    console.log("Map loaded");
     mapRef.current = map;
   }
 
@@ -37,90 +40,85 @@ const RouteMap = ({origin, destination}) => {
     if (origin && destination) {
       // eslint-disable-next-line react/prop-types
       fetch(`${BACKEND_URL}/get-route?origin_lat=${origin.lat}&origin_lng=${origin.lng}&destination_lat=${destination.lat}&destination_lng=${destination.lng}`)
-      .then((response) => {
-        return response.json()
-      })
-      .then((data) => {
-        console.log("Polyline from backend:", data.polyline);
-        if (window.google && window.google.maps && window.google.maps.geometry && data.polyline) {        
-          const decodedPath = window.google.maps.geometry.encoding.decodePath(data.polyline);
-          setDirections(decodedPath);
-          
-          // Getting the route details and saving it as steps
-          if (data.routes && data.routes.length > 0) {
-            const route = data.routes[0];
-            const routeSteps = route.legs.flatMap((leg) => 
-            leg.steps.map((step) => ({
-              instruction: step.html_instructions,
-              distance: step.distance.text,
-              start_location: step.start_location,
-              elevation: null
-              }))
-            );
-            setSteps(routeSteps);
-            console.log("Steps are ", routeSteps)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          console.log(data[0].polyline);
 
-            // Calculating the elevation for the steps
-            // routeSteps.forEach((step, index) => {
-            //   fetch(`${BACKEND_URL}/get-elevation?lat=${step.start_location.lat}&lng=${step.start_location.lng}`)
-            //     .then((response) => response.json())
-            //     .then((elevationData) => {
-            //       const updatedSteps = [...routeSteps];
-            //       updatedSteps[index].elevation = elevationData.elevation;
+            
+            const routesWithElevation = data.map((route) => {
+              console.log(route)
+              const decodedPath = window.google.maps.geometry.encoding.decodePath(route.polyline);
+              console.log(route.routes[0].legs);
+              const routeSteps = route.routes[0].legs.flatMap((leg) => {
+                return leg.steps.map((step) => ({
+                  instruction: step.html_instructions,
+                  distance: step.distance,
+                  start_location: step.start_location,
+                  elevation: null
+                }))
+              })
+              return Promise.all(
+                routeSteps.map((step) =>
+                  fetch(`${BACKEND_URL}/get-elevation?lat=${step.start_location.latLng.latitude}&lng=${step.start_location.latLng.longitude}`)
+                    .then((response) => response.json())
+                    .then((elevationData) => {
+                      console.log(elevationData)
+                      return {
+                        ...step,
+                        elevation: elevationData.elevation
+                      }
+                    })
+                    .catch((error) => {
+                      console.error("Error fetching elevation:", error);
+                      return {...step, elevation: 0};
+                    })
+                )
+              ).then((stepsWithElevation) => {
+                // This has all the details on the route 
+                console.log(stepsWithElevation);
+                const elevationChanges = stepsWithElevation.map((step, index, arr) => 
+                  index > 0 ? (step.elevation - arr[index - 1].elevation).toFixed(2) : 0
+                );
 
-            //       const elevationChange = elevationData.elevation - updatedSteps[index - 1].elevation;
-            //       updatedSteps[index].elevationChange = elevationChange.toFixed(2);
-                  
-            //       // updatedSteps[index].elevation = elevationData.elevation
-            //       setSteps(updatedSteps);
-            //     });
-            // })
-          console.log(routeSteps);
-           Promise.all(
-            routeSteps.map((step) => {
-              console.log(step.start_location.lat);
-              console.log(step.start_location.lng);
+                // This is returning undefined array of legnth steps
+                console.log(elevationChanges, "We changing")
+                return {
+                  polyline: decodedPath,
+                  steps: stepsWithElevation,
+                  elevationChanges,
+                  duration: route.duration,
+                  distance: (route.distance * 3.28084).toFixed(2)
+                };
+              });
+            });
+            console.log(routesWithElevation, "ROUTES ELEV");
 
-              return fetch(`${BACKEND_URL}/get-elevation?lat=${step.start_location.lat}&lng=${step.start_location.lng}`)
-                .then((response) => response.json())
-                .then((elevationData) => {
-                  console.log(elevationData);
-                  return {...step, elevation: elevationData.elevation};
-                })
-                .catch((error) => {
-                  console.error("Error fetching elevation:", error);
-                  return {...step, elevation: 0};
-                })
-            })
-           ).then((stepsWithElevation) => {
-              setSteps(stepsWithElevation);
-              console.log("Updated steps", stepsWithElevation)
-
-              const updatedsteps = stepsWithElevation.map((step, index, arr) => 
-                 index > 0 ? (step.elevation - arr[index - 1].elevation).toFixed(2) : 0
-              );
-
-              setElevationChanges(updatedsteps)
-           })
-          //  ).then((stepsWithElevation) => {
-          //     console.log("Steps with elevation:", stepsWithElevation);
+            // This determines what the best route is by the elevation
+            Promise.all(routesWithElevation).then((allRoutes) => {
+              console.log(allRoutes);
+              const bestRoute = allRoutes.reduce((lowest, route) => {
+                // Calculates the total difference between for the elevation
+                const totalElevationChange = route.elevationChanges.reduce((sum, change) => sum + Math.abs(change), 0);
+                return totalElevationChange < (lowest.elevationChanges.reduce((sum, change) => sum + Math.abs(change), 0)) ? route : lowest;
+              }, allRoutes[0]);
               
-          //   const updatedSteps = stepsWithElevation.map((step, index, arr) => {
-          //   const elevationChange = step.elevation - arr[index - 1].elevation
-          //   return {...step, elevationChange: elevationChange.toFixed(2)}
-          //  });
-           
-          //  setSteps(updatedSteps);
-          //  // End of if
-          // });
-        }
+              // Set the directions for the best route
+              setDirections(bestRoute.polyline)
+              setSteps(bestRoute.steps);
+              setElevationChanges(bestRoute.elevationChanges);
+              setDuration(bestRoute.duration);
+              setDistance(bestRoute.distance);
+            });
+          
+        })
+        .catch((error) => console.error("Error fetching route", error));
       }
-      })
-      .catch((error) => console.error("Error fetching route:", error))
-    }
-    
+
   },[origin, destination]);
 
+  // Zoom mechanic for the map to automatically zoom
+  // Making sure we have the directions set and the map set
   useEffect(() => {
     if (directions && mapRef.current) {
       const bounds = new window.google.maps.LatLngBounds();
@@ -151,6 +149,7 @@ const RouteMap = ({origin, destination}) => {
     <LoadScript googleMapsApiKey={apiKey} libraries={["geometry"]}>
       <GoogleMap
         onLoad={handleMapLoad}
+        // Need to update center for KSU
         // center={{ lat: 34.028487707942915, lng: -84.61515130111765}}
         zoom={12}
         mapContainerStyle={{ width: "600px", height: "600px"}}
@@ -160,11 +159,14 @@ const RouteMap = ({origin, destination}) => {
                         options={{ strokeColor: "green", strokeWeight: 4, strokeOpacity : 0.6}}/>}
         </GoogleMap>
         <ul>
+          <div>{`Duration is: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</div>
+          <div>{`Total Distance is: ${distance}`}</div>
           {steps.map((step, index) => (
             <li key={index}>
-              {stripHTML(step.instruction)} in {step.distance}
+              {stripHTML(step.instruction)} in {`${step.distance.toFixed(1)}ft`}
               {step.elevation !== null && ` (Elevation: ${step.elevation.toFixed(2)}m)`} 
               {index > 0 && ` (Change: ${elevationChanges[index]}m)`}
+              
             </li>
           ))}
         </ul>

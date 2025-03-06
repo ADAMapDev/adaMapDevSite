@@ -28,8 +28,8 @@ function App() {
               Testing it out by manually adding the 
               coordinates into the parameters */}
           <WalkingRouteMap
-            origin={{ lat: 34.03925920478031, lng: -84.58182061858527 }}
-            destination={{ lat: 34.03868425275164, lng: -84.58055958373744 }}/></div>
+            origin={{ lat: 34.03887, lng: -84.58559 }}
+            destination={{ lat: 34.04008, lng: -84.58220 }}/></div>
 
         {/* Action Buttons */}
         <div className="action-buttons">
