@@ -1,16 +1,17 @@
 import {useState, useEffect, useRef} from "react"
-import {GoogleMap, Polyline, LoadScript} from "@react-google-maps/api"
+import {GoogleMap, Polyline, LoadScript, Marker} from "@react-google-maps/api"
 
 const BACKEND_URL = "http://localhost:5000";
 
 /*
 *
-* THIS IS USED TO FIND LOWEST ELEVATION OF MULTIPLE ROUTES
+* THIS IS USED TO FIND LOWEST ELEVATION OF MULTIPLE ROUTES USING
+*                       LIVE TRACKING
 *
 */
 
 // eslint-disable-next-line react/prop-types
-const RouteMap = ({origin, destination}) => {
+const LiveElevationRouteComponent = ({ destination }) => {
   const [apiKey, setApiKey] = useState(null);
   const [directions, setDirections] = useState(null);
   const [elevationChanges, setElevationChanges] = useState([]);
@@ -18,7 +19,9 @@ const RouteMap = ({origin, destination}) => {
   const mapRef = useRef(null);
   const [duration, setDuration] = useState("");
   const [distance, setDistance] = useState("");
+  const [userLocation, setUserLocation] = useState(null);
   
+
 
   const handleMapLoad = (map) => {
     console.log("Map loaded");
@@ -43,9 +46,9 @@ const RouteMap = ({origin, destination}) => {
   useEffect(() => {
     // Check if origin and destination are valid
     // Call the Backend to retrieve the routes based on the origin and destination
-    if (origin && destination) {
+    if (userLocation && destination) {
       // eslint-disable-next-line react/prop-types
-      fetch(`${BACKEND_URL}/get-route-elevation?origin_lat=${origin.lat}&origin_lng=${origin.lng}&destination_lat=${destination.lat}&destination_lng=${destination.lng}`)
+      fetch(`${BACKEND_URL}/get-route-elevation?origin_lat=${userLocation.lat}&origin_lng=${userLocation.lng}&destination_lat=${destination.lat}&destination_lng=${destination.lng}`)
         .then((response) => response.json())
         .then((data) => {
           
@@ -101,7 +104,7 @@ const RouteMap = ({origin, destination}) => {
                   steps: stepsWithElevation,
                   elevationChanges,
                   duration: route.duration,
-                  distance: (route.distance * 3.28084).toFixed(2)
+                  distance: (route.distance * 3.28084).toFixed(2)   // Converts distance to miles
                 };
               });
             });
@@ -128,8 +131,27 @@ const RouteMap = ({origin, destination}) => {
         .catch((error) => console.error("Error fetching route", error));
       }
 
-  },[origin, destination]);
+  },[destination, userLocation]);
 
+  // Get the location of the user 
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      const watchPos = navigator.geolocation.watchPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation({ lat: latitude, lng: longitude});
+
+        // HERE WILL BE CHECKING IF GOING OFF ROUTE
+        },
+        (error) => console.log("Error getting location", error),
+        { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000}
+      );
+
+      return () => navigator.geolocation.clearWatch(watchPos);
+    }
+    else {
+      console.error("Geolocation is not supported by browser");
+    }
+  },[directions])
 
   // Zoom mechanic for the map to automatically zoom
   // Making sure we have the directions set and the map set
@@ -181,6 +203,15 @@ const RouteMap = ({origin, destination}) => {
                 strokeWeight: 4, 
                 strokeOpacity : 0.6}}/>}
 
+          {userLocation && directions && (
+            <Marker
+              position={userLocation}
+              icon={{
+                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", 
+                scaledSize: new window.google.maps.Size(40, 40) 
+              }}
+              />
+          )}
         </GoogleMap>
         <ul>
           <div>{`Duration is: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</div>
@@ -201,4 +232,4 @@ const RouteMap = ({origin, destination}) => {
 }
 
 
-export default RouteMap
+export default LiveElevationRouteComponent;

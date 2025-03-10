@@ -1,8 +1,10 @@
 
 import "./App.css";
-import WalkingRouteMap from "./WalkingRouteMap";
+// import WalkingRouteMap from "./WalkingRouteMap";
+import RegularRouteComponent from "./navigation/RegularRoute";
 
 function App() {
+
   return (
     <div className="App">
       {/* Sidebar */}
@@ -27,7 +29,7 @@ function App() {
           {/* Placed the map function here for now
               Testing it out by manually adding the 
               coordinates into the parameters */}
-          <WalkingRouteMap
+          <RegularRouteComponent
             origin={{ lat: 34.03887, lng: -84.58559 }}
             destination={{ lat: 34.04008, lng: -84.58220 }}/></div>
 
