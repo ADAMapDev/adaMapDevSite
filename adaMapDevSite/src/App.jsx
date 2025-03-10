@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
+import WalkingRouteMap from "./WalkingRouteMap";
 
 function App() {
   const [highContrast] = useState(false);
