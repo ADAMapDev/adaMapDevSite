@@ -2,6 +2,17 @@ import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import WalkingRouteMap from "./WalkingRouteMap";
 
+//import ReactDOM from 'react-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faWheelchair } from '@fortawesome/free-solid-svg-icons'
+import { faDoorClosed } from '@fortawesome/free-solid-svg-icons'
+import { faMound } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
+import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faMinus } from '@fortawesome/free-solid-svg-icons'
+
+
 function App() {
   const [highContrast] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -125,11 +136,11 @@ function App() {
         <div className="accessibility-options">
           <p>Accessibility Options</p>
           <button>
-            <span>♿</span>Wheelchair Accessible</button>
+            <span><FontAwesomeIcon icon={faWheelchair}/></span>Wheelchair Accessible</button>
           <button>
-            <span>🚪</span>Accessible Door</button>
+            <span><FontAwesomeIcon icon={faDoorClosed} /></span>Accessible Door</button>
           <button>
-            <span>📉</span>Low Elevation Change</button>
+            <span><FontAwesomeIcon icon={faMound} /></span>Low Elevation Change</button>
         </div>
 
           {/* Map Container */}
@@ -145,10 +156,10 @@ function App() {
           {/* Accessibility Features */}    
           {/* Action Buttons */}
           <div className="action-buttons">
-            <button onClick={login}>↩</button>
-            <button onClick={zoomIn}>+</button>
-            <button onClick={zoomOut}>-</button>
-            <button onClick={currentLocation}>▶</button>
+            <button onClick={login}><FontAwesomeIcon icon={faArrowRightToBracket} /></button>
+            <button onClick={zoomIn}><FontAwesomeIcon icon={faPlus} /></button>
+            <button onClick={zoomOut}><FontAwesomeIcon icon={faMinus} /></button>
+            <button onClick={currentLocation}><FontAwesomeIcon icon={faLocationArrow} /></button>
           </div>
         </div>
       </div>
