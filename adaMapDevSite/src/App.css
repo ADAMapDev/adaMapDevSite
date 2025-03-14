@@ -1,15 +1,144 @@
-
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
+    background-color: #f4f4f4;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
-/* Sidebar */
-.sidebar {
-    width: 250px;
+header {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+/* Dimming effect */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark background with opacity */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1;
+}
+
+/* When the side nav is open, show the overlay */
+.overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+ /* Side Navigation */
+.sidenav {
+    height: 100%;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: -250px; /* Initially off-screen */
+    width: 300px;
+    background-color: #6d5257;
+    overflow-x: hidden;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0; /* Initially hidden */
+    padding-top: 60px;
+}
+
+.sidenav.open {
+    transform: translateX(250px); /* Move sidebar into view */
+    opacity: 1; /* Fade in */
+}
+
+.sidenav a {
+padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #F2D5DB;
+    display: block;
+    transition: color 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+  /* Main Content Shift */
+#main {
+    transition: margin-left 0.5s ease;
+}
+
+#main.shifted {
+    margin-left: 250px; /* Push content to the right */
+}
+
+  /* Open Nav Button */
+.open-nav {
+    font-size: 30px;
+    cursor: pointer;
+    color: #111;
+}
+
+.container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.search-bar {
+    position: relative;
+    top: 50px; left: 80px;
+}
+
+.search-bar input {
+    width: 30%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.dropdown {
+    position: absolute;
+    width: 35%;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+  /* Sidebar */
+.accessibility-options {
+    width: 500px;
+    position: relative;
+    top: 50px; left: 100px;
     background-color: #f5e7e4;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     display: flex;
@@ -18,7 +147,7 @@ body {
     gap: 10px;
 }
 
-.sidebar button {
+.accessibility-options button {
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 10px;
@@ -30,11 +159,11 @@ body {
     gap: 10px;
 }
 
-.sidebar button:hover {
-    background-color: #e8e8e8;
+.accessibility-options button:hover {
+    background-color: #F2D5DB;
 }
 
-/* Map Container */
+  /* Map Container */
 .map-container {
     flex-grow: 1;
     position: relative;
@@ -51,11 +180,12 @@ body {
     font-size: 1.5em;
 }
 
-/* Buttons on the right */
+  /* Buttons on the right */
 .action-buttons {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    position: fixed;
+    width: 60px;
+    top: 70px;
+    right: 80px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -63,8 +193,8 @@ body {
 
 .action-buttons button {
     background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
+    border: 3px solid #ccc;
+    padding: 20px;
     border-radius: 5px;
     cursor: pointer;
     display: flex;
@@ -73,5 +203,5 @@ body {
 }
 
 .action-buttons button:hover {
-    background-color: #e8e8e8;
+    background-color: #F2D5DB;
 }

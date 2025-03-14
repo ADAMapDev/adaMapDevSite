@@ -158,7 +158,7 @@ def get_route_elevation():
                         "html_instructions": step["navigationInstruction"]["instructions"],
                         "distance": step["distanceMeters"] * 3.28084,
                         "start_location": step["startLocation"]
-                    } for step in leg.get("steps", [])]
+                    } for step in leg["steps"]]
                 } for leg in legs]
             }]
         })
