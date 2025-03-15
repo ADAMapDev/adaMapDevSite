@@ -24,7 +24,6 @@ const LocationTracker = ({ onLocationUpdate, setFetchLocation }) => {
   // Auto-fetch location when component mounts
   useEffect(() => {
     setFetchLocation(() => fetchLocation)
-    // Refresh location every 10 seconds
   }, []);
 
   return null;
