@@ -66,7 +66,7 @@ def get_route():
     if 'routes' not in data or not data.get('routes'):
         return jsonify({"error": "No routes found"}), 404
 
-
+    print(data)
     route_steps = [
         {
             "html_instructions": step["navigationInstruction"]["instructions"],
@@ -87,7 +87,7 @@ def get_route():
     return jsonify({
         "polyline": route["polyline"]["encodedPolyline"],
         "duration": legs[0]["duration"],
-        "distance": legs[0]["distanceMeters"],
+        "distance": legs[0]["distanceMeters"] * 3.28084,
         "steps": route_steps,
     })
 
@@ -145,8 +145,9 @@ def get_route_elevation():
     for route in data["routes"]:
         polyline = route["polyline"]["encodedPolyline"]
         legs = route["legs"]
-        distance = legs[0]["distanceMeters"]
+        distance = legs[0]["distanceMeters"] * 3.28084
         duration = legs[0]["duration"]
+        print(legs)
 
         routes.append({
             "distance": distance,
@@ -157,7 +158,9 @@ def get_route_elevation():
                     "steps": [{
                         "html_instructions": step["navigationInstruction"]["instructions"],
                         "distance": step["distanceMeters"] * 3.28084,
-                        "start_location": step["startLocation"]
+                        "start_location": step["startLocation"],
+                        "end_location": step["endLocation"],
+                        "polyline": step["polyline"]["encodedPolyline"],
                     } for step in leg["steps"]]
                 } for leg in legs]
             }]

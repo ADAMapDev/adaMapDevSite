@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import "./App.css";
-import { GoogleMap, LoadScript, Marker, Polyline } from "@react-google-maps/api";
+import { GoogleMap, InfoWindow, LoadScript, Marker, Polyline } from "@react-google-maps/api";
 import UserRegularRouteComponent from "./navigation/UserRegularRoute";
 import LiveElevationRouteComponent from "./navigation/LiveElevationRoute";
 import LocationTracker from "./utils/LocationTracker";
@@ -12,15 +12,15 @@ import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faMinus } from '@fortawesome/free-solid-svg-icons'
+import wheelchairIcon from "./assets/wheelchair_icon.png"
 
 
 const libraries = ["places", "geometry"];
 const center = { lat: 34.0384731003286, lng: -84.58150433167211 };
 const mapContainerStyle = {
-  width: "600px",
-  height: "600px"
+  width: "1400px",
+  height: "800px"
 };
-
 
 function App() {
   const [highContrast] = useState(false);
@@ -40,6 +40,12 @@ function App() {
   const [userLocation, setUserLocation] = useState(null);
   const [fetchLocation, setFetchLocation] = useState(() => () => {});
   const [zoomLevel, setZoomLevel] = useState(14);
+  const [accessibleDoorLocations,setAccessibleDoorLocations] = useState([]);
+  const [selectedDoor, setSelectedDoor] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [polylineSegments, setPolylineSegments] = useState([]);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isCreateAccountModalOpen, setIsCreateAccountModalOpen] = useState(false);
 
 
   const apiKey = "AIzaSyCEDX3d0qqPwYLybn_-67LCUq6k26CvYZ0";
@@ -83,25 +89,32 @@ function App() {
     { name: "The Commons", lat: 34.037, lng: -84.610},
     { name: "Testing House", lat: 34.003144766497456, lng: -84.57567354414421},
     { name: "Middle of nowhere", lat: 34.00066396294443, lng: -84.85132638295222},
-    { name: "Publix", lat: 34.0295784043314, lng: -84.77891916590933}
-  ]
+    { name: "Publix", lat: 34.0295784043314, lng: -84.77891916590933},
+    { name: "Burruss Building", lat: 34.03937990713855, lng: -84.58183666658006},
+    { name: "Hill", lat: 33.994277808401854, lng: -84.58158428693656}
+  ];
 
-
+  const accessibleDoors = [
+    {id: 1, name: "Burruss Building", lat: 34.03918, lng: -84.58182}
+  ];
 
 
   {/* What the side buttons will do */}
-
-  const login = () => {
-    alert("pops up a login page");
+  const openLoginModal = () => {
+    setIsLoginModalOpen(true);
   };
 
-  // const zoomIn = () => {
-  //   alert("this will zoom in on the map");
-  // };
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  }
 
-  // const zoomOut = () => {
-  //   alert("this will zoom out on the map");
-  // };
+  const openCreateAccountModal = () => {
+    setIsLoginModalOpen(true);
+  }
+
+  const closeCreateAccountModal = () => {
+    setIsCreateAccountModalOpen(false)
+  }
 
   /* Zooms in on the map with a boundary of  */ 
   const handleZoomIn = () => {
@@ -119,11 +132,22 @@ function App() {
     setShowDropdown(true);
   };
 
+
   const handleLocationClick = (location) => {
     setSearchQuery(location.name);
     setShowDropdown(false);
     /* Update this later to query the coordinates from the database */ 
     setDestination({lat: location.lat, lng: location.lng})
+    setAccessibleDoorLocations([]);
+    setDirections([]);
+    setPolylineSegments([]);
+
+    /* Find the accessible doors for the destination */ 
+    const relatedDoors = accessibleDoors.filter(
+      (door) => door.name === location.name
+    );
+
+    setAccessibleDoorLocations(relatedDoors);
   };
 
   const handleClickOutside = (event) => {
@@ -152,12 +176,15 @@ function App() {
 
   /* Handles the updating of the attributes of the route for the components */
   const handleDirectionsUpdate = (decodedPath, duration, distance, steps, elevationChanges) => {
+    setDirections([])
+    setPolylineSegments([]);
     setDirections(decodedPath || []);
     setSteps(steps || "");
     setDuration(duration || "");
     setDistance(distance || "");
     setElevationChanges(elevationChanges || []);
   }
+
 
   /* Renders the route based on what the user has selected in the button */
   const renderRouteComponent = () => {
@@ -167,15 +194,12 @@ function App() {
       //     <LiveWheelchairRouteComponent></LiveWheelchairRouteComponent>
       //   );
 
-      // case "accessibleDoor":
-      //   return (
-      //     <LiveAccessibleDoorRouteComponent></LiveAccessibleDoorRouteComponent>
-      //   ); 
       case "lowElevation":
         return (
           <LiveElevationRouteComponent
             destination={destination}
             onDirectionsUpdate={handleDirectionsUpdate}
+            onPolylineUpdate={setPolylineSegments}
             userLocation={userLocation}
           />
         ); 
@@ -288,21 +312,62 @@ function App() {
                     position={destination}
                     icon={{
                       url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                      scaledSize: { width: 40, height: 40}
+                      scaledSize: { width: 40, height: 40 }
                     }}
                   />
                 )}
+
+                {/* Markers for Accessible Entrances */}
+                {routeType === "accessibleDoor" && accessibleDoorLocations.map((door) => (
+                  <Marker
+                    key={door.id}
+                    position={{ lat: door.lat, lng: door.lng}}
+                    icon={{
+                      url: wheelchairIcon,
+                      scaledSize: new window.google.maps.Size(20, 20), 
+                    }} 
+                    
+                    onClick={() => setSelectedDoor(door)}
+                  />
+                ))}
+                {selectedDoor && (
+                  <InfoWindow
+                    position={{ lat: selectedDoor.lat, lng: selectedDoor.lng}}
+                    onCloseClick={() => setSelectedDoor(null)}
+                  >
+                    <div>
+                      <h3>Accessible Door</h3>
+                      <p>Building: {selectedDoor.name}</p>
+                    </div>
+                  </InfoWindow>
+                )}
+
                 {/* Call the respective route to display*/}
                 {showRoute && renderRouteComponent()}
               {console.log("Rendering polyline with directions:", directions)}
-              {directions && 
+              {directions && routeType !== "lowElevation" &&
                 <Polyline 
                   path={directions}
                   options={{
-                    strokeColor: "red",
+                    strokeColor: "blue",
                     strokeWeight: 4,
                     strokeOpacity: 0.8
                   }}/>}
+              {directions && routeType === "lowElevation" && 
+                directions.map((segment, index) => (
+                  <Polyline
+                    key={index}
+                    path={segment.polyline}
+                    options={{
+                      // geodesic: true,
+                      strokeColor: segment.color,
+                      strokeWeight: 4,
+                      strokeOpacity: 0.8   
+                    }}
+                  />
+                ))
+                
+              }
               </GoogleMap>
             </LoadScript>
           </div>
@@ -312,7 +377,7 @@ function App() {
             {directions && (
               <>
                 <div>{`Duration: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</div>
-                <div>{`Distance: ${distance} ft`}</div>
+                <div>{`Distance: ${distance}ft`}</div>
               </>
             )}
             {/* Routes with no elevation */}
@@ -324,21 +389,21 @@ function App() {
             {/* Routes with elevation */}
             {routeType === "lowElevation" && (
               steps && steps.map((step, index) => (
+
                 <li key={index}>
-                  {`${step.instruction} in ${(step.distance).toFixed(1)}`}
-                  {step.elevation !== undefined ? ` (Elevation: ${step.elevation.toFixed(2)})`: ""}
+                  {`${step.instruction} in ${(step.distance).toFixed(1)} ft`}
+                  {step.elevation !== undefined ? ` (Elevation: ${step.elevation.toFixed(2)}m)`: ""}
                   {index > 0 && elevationChanges[index] !== undefined ? ` (Change: ${elevationChanges[index]}m)` : ""}
                 </li>
+                
               ))
             )}
-            <ul>
-              
-            </ul>
+            
           </div>
           {/* Accessibility Features */}    
           {/* Action Buttons */}
           <div className="action-buttons">
-            <button onClick={login}><FontAwesomeIcon icon={faArrowRightToBracket}/></button>
+            <button onClick={openLoginModal}><FontAwesomeIcon icon={faArrowRightToBracket}/></button>
             <button onClick={handleZoomIn}><FontAwesomeIcon icon={faPlus}/></button>
             <button onClick={handleZoomOut}><FontAwesomeIcon icon={faMinus}/></button>
             <button onClick={fetchLocation}><FontAwesomeIcon icon={faLocationArrow}/></button>
@@ -346,6 +411,74 @@ function App() {
           </div>
         </div>
       </div>
+
+      {/* Login Modal */}
+      {isLoginModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button className="close-btn" onClick={closeLoginModal}>
+              &times;
+            </button>
+            <h2>Login</h2>
+            <form>
+              <div className="form-group">
+                <label>Username</label>
+                <input type="text" placeholder="Enter your username" />
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="Enter your password" />
+              </div>
+              <button type="submit" className="submit-btn">
+                Login
+              </button>
+            </form>
+            <p>
+              <a href="#" onClick={openCreateAccountModal}>
+                Create Account
+              </a>
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Create Account Modal */}
+      {isCreateAccountModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button className="close-btn" onClick={closeCreateAccountModal}>
+              &times;
+            </button>
+            <h2>Create Account</h2>
+            <form>
+              <div className="form-group">
+                <label>Username</label>
+                <input type="text" placeholder="Enter your username" />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="Enter your email" />
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="Enter your password" />
+              </div>
+              <button type="submit" className="submit-btn">
+                Create Account
+              </button>
+            </form>
+            <button
+              className="back-btn"
+              onClick={() => {
+                setIsCreateAccountModalOpen(false);
+                setIsLoginModalOpen(true);
+              }}
+            >
+              Back to Login
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

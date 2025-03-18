@@ -47,6 +47,7 @@ const UserRegularRouteComponent = ({destination, onDirectionsUpdate, userLocatio
       fetch(`${BACKEND_URL}/get-route?origin_lat=${userLocation.lat}&origin_lng=${userLocation.lng}&destination_lat=${destination.lat}&destination_lng=${destination.lng}`)
         .then((response) => response.json())
         .then((data) => {
+          console.log("TESTING DUP", data)
           
           /*
           * *****************************************
@@ -55,8 +56,8 @@ const UserRegularRouteComponent = ({destination, onDirectionsUpdate, userLocatio
           * *****************************************
           */
           const decodedPath = window.google.maps.geometry.encoding.decodePath(data.polyline);
-            
-        onDirectionsUpdate(decodedPath, data.duration, data.distance, data.steps, []);
+          const distance = data.distance.toFixed(2)
+        onDirectionsUpdate(decodedPath, data.duration, distance, data.steps, []);
 
         })
         .catch((error) => console.error("Error fetching route", error));

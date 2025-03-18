@@ -1,4 +1,6 @@
-import { useEffect, useRef} from "react"
+/* eslint-disable no-unused-vars */
+import { useEffect, useRef, useState} from "react"
+
 
 const BACKEND_URL = "http://localhost:5000";
 
@@ -16,9 +18,12 @@ const BACKEND_URL = "http://localhost:5000";
 */
 
 // eslint-disable-next-line react/prop-types
-const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, userLocation}) => {
+const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolylineUpdate, userLocation}) => {
   const lastPositionRef = useRef(null);
-  
+  const [steps, setSteps] = useState([]);
+  const [elevationChanges, setElevationChanges] = useState([]);
+  // const [routeLoaded, setRouteLoaded] = useState(false);
+  // const [globalPolyline, setGlobalPolyline] = useState(null);
 
   // Get the location of the user 
 
@@ -41,6 +46,14 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, userLoca
     return R * c; // Distance in meters
   };
 
+  const getStrokeColor = (elevationChange) => {
+    const num = parseInt(elevationChange)
+    /* Change the text to an integer */
+    if (num > 3) return "red"; // Large change
+    if (num > 2) return "yellow"; // Medium change
+    return "green"; // Small change
+  };
+
 
   useEffect(() => {
     if (lastPositionRef.current) {
@@ -50,7 +63,8 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, userLoca
     lastPositionRef.current = userLocation;
 
     onDirectionsUpdate(null, null, null, [], []);
-
+    onPolylineUpdate([]);
+    // setRouteLoaded(false);
 
     // Check if origin and destination are valid
     // Call the Backend to retrieve the routes based on the origin and destination
@@ -68,6 +82,7 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, userLoca
               // Debuging
               console.log(route)
               const decodedPath = window.google.maps.geometry.encoding.decodePath(route.polyline);
+              // setGlobalPolyline(decodedPath);
               // Debugging
               console.log(route.routes[0].legs);
               const routeSteps = route.routes[0].legs.flatMap((leg) => {
@@ -76,6 +91,8 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, userLoca
                   instruction: step.html_instructions,
                   distance: step.distance,
                   start_location: step.start_location,
+                  end_location: step.end_location,
+                  encodedPolyline: step.polyline,
                   elevation: null
                 }))
               })
@@ -112,7 +129,7 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, userLoca
                   steps: stepsWithElevation,
                   elevationChanges,
                   duration: route.duration,
-                  distance: (route.distance * 3.28084).toFixed(2)   // Converts distance to miles
+                  distance: route.distance  // Converts distance to miles
                 };
               });
             });
@@ -129,61 +146,44 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, userLoca
               
               console.log(bestRoute.elevationChanges)
               // Set the directions for the best route
-              onDirectionsUpdate(bestRoute.polyline, bestRoute.duration, bestRoute.distance, bestRoute.steps, bestRoute.elevationChanges);
+              console.log("STEPS", bestRoute.steps)
+
+              const coloredPolylines = bestRoute.steps.map((step, index) => {
+                const decodedPolyline = window.google.maps.geometry.encoding.decodePath(step.encodedPolyline);
+
+                const elevationChange = bestRoute.elevationChanges[index] || 0;
+                let color = getStrokeColor(elevationChange);
+
+                return {
+                  polyline: decodedPolyline,
+                  color: color
+                }
+              })
+
+              const finalDistance = bestRoute.distance.toFixed(2);
+              setSteps(bestRoute.steps);
+              setElevationChanges(bestRoute.elevationChanges);
+              // setRouteLoaded(true);
+              
+              onDirectionsUpdate(coloredPolylines, bestRoute.duration, finalDistance, bestRoute.steps, bestRoute.elevationChanges);
+              onPolylineUpdate(coloredPolylines);
             });
           
+
+            
         })
         .catch((error) => console.error("Error fetching route", error));
       }
 
   },[destination, userLocation]);
 
+  
+  
   return null;
-  // return (
-  //   <LoadScript googleMapsApiKey={apiKey} libraries={["geometry"]}>
-  //     <GoogleMap
-  //       onLoad={handleMapLoad}
-  //       /*
-  //       *
-  //       *  Need to update center for KSU
-  //       * 
-  //       */
-  //       // center={{ lat: 34.028487707942915, lng: -84.61515130111765}}
-  //       zoom={12}
-  //       mapContainerStyle={{ width: "600px", height: "600px"}}
-  //       >
-  //         {directions && 
-  //         <Polyline 
-  //             path={directions}
-  //             options={{ 
-  //               strokeColor: "green", 
-  //               strokeWeight: 4, 
-  //               strokeOpacity : 0.6}}/>}
 
-  //         {userLocation && directions && (
-  //           <Marker
-  //             position={userLocation}
-  //             icon={{
-  //               url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", 
-  //               scaledSize: new window.google.maps.Size(40, 40) 
-  //             }}
-  //             />
-  //         )}
-  //       </GoogleMap>
-  //       <ul>
-  //         <div>{`Duration is: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</div>
-  //         <div>{`Total Distance is: ${distance}ft`}</div>
-  //         {steps.map((step, index) => (
-  //           <li key={index}>
-  //             {stripHTML(step.instruction)} in {`${step.distance.toFixed(1)}ft`}
-  //             {step.elevation !== null && ` (Elevation: ${step.elevation.toFixed(2)}m)`} 
-  //             {index > 0 && ` (Change: ${elevationChanges[index]}m)`}
-              
-  //           </li>
-  //         ))}
-  //       </ul>
-  //   </LoadScript>
-  // )
+  
+  
+
 
   
 }
