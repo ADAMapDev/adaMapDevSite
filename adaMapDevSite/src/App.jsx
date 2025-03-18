@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
-//import WalkingRouteMap from "./WalkingRouteMap";
 
 function App() {
   const [highContrast] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
-  const [sideNavOpen, setSideNavOpen] = useState(false); // State for side nav
+  const [sideNavOpen, setSideNavOpen] = useState(false); 
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isCreateAccountModalOpen, setIsCreateAccountModalOpen] = useState(false);
   const searchBarRef = useRef(null);
 
   const locations = [
@@ -26,10 +27,23 @@ function App() {
   );
 
   {/* What the side buttons will do */}
-
-  const login = () => {
-    alert("pops up a login page");
+  const openLoginModal = () => {
+    setIsLoginModalOpen(true);
   };
+
+  const closeLoginModal = () => {
+    setIsLoginModalOpen(false);
+  };
+
+  const openCreateAccountModal = () => {
+    setIsLoginModalOpen(false); // Close Login modal
+    setIsCreateAccountModalOpen(true); // Open Create Account modal
+  };
+
+  const closeCreateAccountModal = () => {
+    setIsCreateAccountModalOpen(false);
+  };
+
 
   const zoomIn = () => {
     alert("this will zoom in on the map");
@@ -71,8 +85,10 @@ function App() {
     setSideNavOpen(!sideNavOpen);
   };
 
-{/* Side navigation bar */}
+  {/* Side navigation bar */}
   return (
+
+    
     <div className={`app ${highContrast ? "high-contrast" : ""}`}>
       <div
         className={`overlay ${sideNavOpen ? "open" : ""}`}
@@ -121,39 +137,106 @@ function App() {
         </div>
       </div>
 
-        {/* Accessibility Options */}
-        <div className="accessibility-options">
-          <p>Accessibility Options</p>
-          <button>
-            <span>♿</span>Wheelchair Accessible</button>
-          <button>
-            <span>🚪</span>Accessible Door</button>
-          <button>
-            <span>📉</span>Low Elevation Change</button>
-        </div>
+      {/* Accessibility Options */}
+      <div className="accessibility-options">
+        <p>Accessibility Options</p>
+        <button>
+          <span>♿</span>Wheelchair Accessible</button>
+        <button>
+          <span>🚪</span>Accessible Door</button>
+        <button>
+          <span>📉</span>Low Elevation Change</button>
+      </div>
 
-          {/* Map Container */}
-          <div className="map-container">
-          <div className="map-placeholder"> 
-            {/* Placed the map function here for now
-                Testing it out by manually adding the 
-                coordinates into the parameters */}
-            {/* <WalkingRouteMap
-              origin={{ lat: 34.03887, lng: -84.58559 }}
-              destination={{ lat: 34.04008, lng: -84.58220 }}/> */}
-          </div>
+        {/* Map Container */}
+        <div className="map-container">
+        <div className="map-placeholder"> 
+          {/* Placed the map function here for now
+            Testing it out by manually adding the 
+            coordinates into the parameters */}
+          {/* <WalkingRouteMap
+            origin={{ lat: 34.03887, lng: -84.58559 }}
+            destination={{ lat: 34.04008, lng: -84.58220 }}/> */}
+        </div>
           {/* Accessibility Features */}    
           {/* Action Buttons */}
           <div className="action-buttons">
-            <button onClick={login}>↩</button>
+            <button onClick={openLoginModal}>↩</button>
             <button onClick={zoomIn}>+</button>
             <button onClick={zoomOut}>-</button>
             <button onClick={currentLocation}>▶</button>
           </div>
         </div>
       </div>
+
+ {/* Login Modal */}
+ {isLoginModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button className="close-btn" onClick={closeLoginModal}>
+              &times;
+            </button>
+            <h2>Login</h2>
+            <form>
+              <div className="form-group">
+                <label>Username</label>
+                <input type="text" placeholder="Enter your username" />
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="Enter your password" />
+              </div>
+              <button type="submit" className="submit-btn">
+                Login
+              </button>
+            </form>
+            <p>
+              <a href="#" onClick={openCreateAccountModal}>
+                Create Account
+              </a>
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Create Account Modal */}
+      {isCreateAccountModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button className="close-btn" onClick={closeCreateAccountModal}>
+              &times;
+            </button>
+            <h2>Create Account</h2>
+            <form>
+              <div className="form-group">
+                <label>Username</label>
+                <input type="text" placeholder="Enter your username" />
+              </div>
+              <div className="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="Enter your email" />
+              </div>
+              <div className="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="Enter your password" />
+              </div>
+              <button type="submit" className="submit-btn">
+                Create Account
+              </button>
+            </form>
+            <button
+              className="back-btn"
+              onClick={() => {
+                setIsCreateAccountModalOpen(false);
+                setIsLoginModalOpen(true);
+              }}
+            >
+              Back to Login
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-
 export default App;
