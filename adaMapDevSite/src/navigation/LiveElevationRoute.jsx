@@ -49,8 +49,8 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolyli
   const getStrokeColor = (elevationChange) => {
     const num = parseInt(elevationChange)
     /* Change the text to an integer */
-    if (num > 3) return "red"; // Large change
-    if (num > 2) return "yellow"; // Medium change
+    if (num > 1.5) return "red"; // Large change
+    if (num > 0.5) return "yellow"; // Medium change
     return "green"; // Small change
   };
 
@@ -88,7 +88,7 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolyli
               const routeSteps = route.routes[0].legs.flatMap((leg) => {
                 return leg.steps.map((step) => ({
                   // Properties of the route
-                  instruction: step.html_instructions,
+                  html_instructions: step.html_instructions,
                   distance: step.distance,
                   start_location: step.start_location,
                   end_location: step.end_location,

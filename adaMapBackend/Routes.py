@@ -69,7 +69,7 @@ def get_route():
     print(data)
     route_steps = [
         {
-            "html_instructions": step["navigationInstruction"]["instructions"],
+            "html_instructions": step.get("navigationInstruction", {}).get("instructions", "No instruction available"),
             "distance": step["distanceMeters"] * 3.28084,
             "start_location": step["startLocation"]
         }
@@ -156,7 +156,7 @@ def get_route_elevation():
             "routes": [{
                 "legs": [{
                     "steps": [{
-                        "html_instructions": step["navigationInstruction"]["instructions"],
+                        "html_instructions": step.get("navigationInstruction", {}).get("instructions", "No instruction available"),
                         "distance": step["distanceMeters"] * 3.28084,
                         "start_location": step["startLocation"],
                         "end_location": step["endLocation"],

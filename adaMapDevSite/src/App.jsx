@@ -14,8 +14,9 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faMinus } from '@fortawesome/free-solid-svg-icons'
 import wheelchairIcon from "./assets/wheelchair_icon.png"
 
-
+/* Properties of the map */
 const libraries = ["places", "geometry"];
+/* Centers around Kennesaw State */
 const center = { lat: 34.0384731003286, lng: -84.58150433167211 };
 const mapContainerStyle = {
   width: "1400px",
@@ -48,7 +49,7 @@ function App() {
   const [isCreateAccountModalOpen, setIsCreateAccountModalOpen] = useState(false);
 
 
-  const apiKey = "AIzaSyCEDX3d0qqPwYLybn_-67LCUq6k26CvYZ0";
+  const apiKey = "PLACE HERE";
 
   /* Retrieve API key for map */ 
   // useEffect(() => {
@@ -83,17 +84,27 @@ function App() {
   // ];
 
   /* Testing Locations */ 
-  const locations = [
-    { name: "Wellstar College of Health and Human", lat: 34.038, lng: -84.615},
-    { name: "Stillwell Theater", lat: 34.034, lng: -84.608},
-    { name: "The Commons", lat: 34.037, lng: -84.610},
-    { name: "Testing House", lat: 34.003144766497456, lng: -84.57567354414421},
-    { name: "Middle of nowhere", lat: 34.00066396294443, lng: -84.85132638295222},
-    { name: "Publix", lat: 34.0295784043314, lng: -84.77891916590933},
-    { name: "Burruss Building", lat: 34.03937990713855, lng: -84.58183666658006},
-    { name: "Hill", lat: 33.994277808401854, lng: -84.58158428693656}
-  ];
+  // const locations = [
+  //   { name: "Wellstar College of Health and Human", lat: 34.038, lng: -84.615},
+  //   { name: "Stillwell Theater", lat: 34.034, lng: -84.608},
+  //   { name: "The Commons", lat: 34.037, lng: -84.610},
+  //   { name: "Testing House", lat: 34.003144766497456, lng: -84.57567354414421},
+  //   { name: "Middle of nowhere", lat: 34.00066396294443, lng: -84.85132638295222},
+  //   { name: "Publix", lat: 34.0295784043314, lng: -84.77891916590933},
+  //   { name: "Burruss Building", lat: 34.03937990713855, lng: -84.58183666658006},
+  //   { name: "Hill", lat: 33.994277808401854, lng: -84.58158428693656}
+  // ];
 
+  const locations = [
+    { name: "Wellstar College of Health and Human Services", lat: 34.04051341627655, lng: -84.58183351658764},
+    { name: "Stillwell Theater", lat: 34.04041596924026, lng: -84.58335836136933},
+    { name: "The Commons", lat: 34.04004730043029, lng: -84.58221003852805},
+    { name: "Burruss Building", lat: 34.03937990713855, lng: -84.58183666658006},
+    { name: "Kennesaw Hall", lat: 34.03871440490257, lng: -84.58058187670002},
+    { name: "Horace W. Sturgis Library", lat: 34.0383758124037, lng: -84.58393616382452},
+    { name: "Mathematics and Statistics", lat: 34.037722276437805, lng: -84.58417005620913},
+
+  ];
   const accessibleDoors = [
     {id: 1, name: "Burruss Building", lat: 34.03918, lng: -84.58182}
   ];
@@ -172,6 +183,7 @@ function App() {
     if (destination) {
       setShowRoute(true)
     }
+    onRouteDataFetched();
   }
 
   /* Handles the updating of the attributes of the route for the components */
@@ -183,6 +195,19 @@ function App() {
     setDuration(duration || "");
     setDistance(distance || "");
     setElevationChanges(elevationChanges || []);
+  }
+
+
+  const onRouteDataFetched = () => {
+
+    const latLngBounds = new window.google.maps.LatLngBounds();
+
+    latLngBounds.extend(new window.google.maps.LatLng(userLocation.lat, userLocation.lng));
+    latLngBounds.extend(new window.google.maps.LatLng(destination.lat, destination.lng));
+
+    if (mapRef.current) {
+      mapRef.current.fitBounds(latLngBounds);
+    }
   }
 
 
@@ -400,6 +425,7 @@ function App() {
             )}
             
           </div>
+ 
           {/* Accessibility Features */}    
           {/* Action Buttons */}
           <div className="action-buttons">

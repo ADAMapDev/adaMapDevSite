@@ -228,7 +228,7 @@ padding: 8px 8px 8px 32px;
 
 .search-bar {
     position: relative;
-    top: 10px; left: 80px;
+    top: -20px; left: 80px;
 }
 
 .search-bar input {
@@ -267,7 +267,7 @@ padding: 8px 8px 8px 32px;
 .accessibility-options {
     width: 500px;
     position: relative;
-    top: 10px; left: 100px;
+    top: -20px; left: 100px;
     background-color: #f5e7e4;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     display: flex;
