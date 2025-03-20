@@ -91,18 +91,24 @@ function App() {
     
     <div className={`app ${highContrast ? "high-contrast" : ""}`}>
       <div
-        className={`overlay ${sideNavOpen ? "open" : ""}`}
-        onClick={toggleSideNav}>
-      </div>
-      <div
-        id="mySidenav"
-        className={`sidenav ${sideNavOpen ? "open" : ""}`}>
-        <button className="closebtn" onClick={toggleSideNav}>&times;</button>
-        <a href="#">thing 1</a>
-        <a href="#">thing 2</a>
-        <a href="#">thing 3</a>
-        <a href="#">thing 4</a>
-      </div>
+          className={`sidebar-indicator ${sideNavOpen ? "hidden" : ""}`}
+          onClick={toggleSideNav}
+        ></div>
+        <div
+          className={`overlay ${sideNavOpen ? "open" : ""}`}
+          onClick={toggleSideNav}
+        ></div>
+        <div
+          id="mySidenav"
+          className={`sidenav ${sideNavOpen ? "open" : ""}`}
+        >
+          <button className="closebtn" onClick={toggleSideNav}>&times;</button>
+          <div className="sidebar-footer">
+            <h4>Quick Links</h4>
+          <a href="https://www.kennesaw.edu/docs/kennesaw-map.pdf" target="_blank" rel="noopener noreferrer">Kennesaw State University - Kennesaw Campus</a>
+          <a href="https://www.kennesaw.edu/docs/marietta-map.pdf" target="_blank" rel="noopener noreferrer">Kennesaw State University - Marietta Campus</a>
+          </div>
+        </div>
 
       {/* Main content */}
       <div
