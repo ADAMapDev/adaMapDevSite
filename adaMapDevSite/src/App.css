@@ -322,7 +322,7 @@ padding: 8px 8px 8px 32px;
 
   /* Sidebar */
 .accessibility-options {
-    width: 500px;
+    width: 375px;
     position: relative;
     top: 50px; left: 150px;
     background-color: #f5e7e4;
@@ -369,7 +369,7 @@ padding: 8px 8px 8px 32px;
   /* Buttons on the right */
 .action-buttons {
     position: fixed;
-    width: 60px;
+    width: 75px;
     top: 70px;
     right: 80px;
     display: flex;
@@ -380,12 +380,33 @@ padding: 8px 8px 8px 32px;
 .action-buttons button {
     background-color: #fff;
     border: 3px solid #ccc;
-    padding: 20px;
+    padding: 10px; /* used to be 20px */
     border-radius: 5px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/*
+.button-text {  /* affects arrow and login
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /*justify-content: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  margin: 0; /* Remove default margin on p
+}
+*/
+
+.button-text {    /* affects arrow and login*/
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 0px; /** Change this value to whatever you wish **/
+    font-size: 16px;
+    /*font-family:Arial;*/
 }
 
 .action-buttons button:hover {

@@ -167,10 +167,47 @@ function App() {
           {/* Accessibility Features */}    
           {/* Action Buttons */}
           <div className="action-buttons">
-            <button onClick={openLoginModal}>↩</button>
-            <button onClick={zoomIn}>+</button>
-            <button onClick={zoomOut}>-</button>
-            <button onClick={currentLocation}>▶</button>
+            {/* <button onClick={openLoginModal}>↩</button> */}
+
+            <button onClick={openLoginModal}>
+              <p className="button-text">
+                <span className="button-icon">↩ </span>
+                <span className="button-text">Login</span>
+                <span className="button-text"></span>
+              </p>
+            </button>
+
+            <button onClick={zoomIn}>
+              <p className="button-text">
+                <span className="button-icon">+ </span>
+                <span className="button-text">Zoom In</span>
+              </p>
+              {/*<p>+ <span className="action-buttons-text">Zoom In</span></p> */}
+            </button>
+
+            {/*
+            <button onClick={zoomIn}>
+              <p className="zoom-in-text">
+                <span className="zoom-in-text">+ </span>
+                <span className="zoom-in-text">Zoom In</span>
+              </p>
+              {/*<p>+ <span className="action-buttons-text">Zoom In</span></p>
+            </button> */}
+            <button onClick={zoomOut}>
+              <p className="button-text">
+                <span className="button-icon">- </span>
+                <span className="button-text">Zoom Out</span>
+              </p>
+              {/*<p>+ <span className="action-buttons-text">Zoom In</span></p> */}
+            </button>
+            <button onClick={currentLocation}>
+              <p className="button-text">
+                <span className="button-icon">▶ </span>
+                <span className="button-text">Current Location</span>
+              </p>
+              {/*<p>+ <span className="action-buttons-text">Zoom In</span></p> */}
+            </button>
+
           </div>
         </div>
       </div>
