@@ -47,68 +47,114 @@ function App() {
   const [polylineSegments, setPolylineSegments] = useState([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCreateAccountModalOpen, setIsCreateAccountModalOpen] = useState(false);
+  const [apiKey, setApiKey] = useState("");
+  const [locations, setLocations] = useState([]);
+  const [accessibleDoors, setAccessibleDoors] = useState([]);
 
-
-  const apiKey = "PLACE HERE";
+  const BACKEND_URL = "http://localhost:5000";
 
   /* Retrieve API key for map */ 
-  // useEffect(() => {
-  //   const getApiKey = async () => {
-  //     try {
-  //       const response = await fetch(`${BACKEND_URL}/get-api-key`);
-  //       const data = await response.json()
-  //       setApiKey(data.apiKey)
-  //     } catch (error) {
-  //       console.error("Error fetching key:, ", error);
-  //     }
-  //   };
-  //   getApiKey();
-  // }, []);
+  useEffect(() => {
+
+    const getApiKey = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/get-api-key`);
+        const data = await response.json()
+        setApiKey(data.apiKey)
+      } catch (error) {
+        console.error("Error fetching key:, ", error);
+      }
+    };
+    getApiKey();
+
+    const getLocations = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/buildings`);
+        const data = await response.json()
+        setLocations(data)
+      } catch (error) {
+        console.error("Error fetching locations", error)
+      }
+    }
+    getLocations();
+
+    const getAccessibleDoors = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/accessible-doors`);
+        const data = await response.json();
+        setAccessibleDoors(data);
+      } catch (error) {
+        console.error("Error fetching accessible doors", error)
+      }
+    }
+    getAccessibleDoors();
+  }, []);
   
 
-
-  // const locations = [
-  //   "Wellstar College of Health and Human",
-  //   "Silhwell Theater at Kennesaw State",
-  //   "The Commons",
-  //   "West Parking Deck",
-  //   "Music Building",
-  //   "Bagwell College of Education",
-  //   "Carmichael Student Center",
-  //   "Kennesaw Hall",
-  //   "Dr. Betty L. Siegel Student Recreation",
-  //   "Sturgis Library",
-  //   "Mathematics and Statistics",
-  //   "Burruss Building",
-  //   "Convocation Center"
+  // const accessibleDoors = [
+  //   {id: 1, name: 'Burruss Building', lat: 34.03916307618097, lng: -84.58182548615811 },
+  //   {id: 2, name: 'Technology Services', lat: 34.04324444304241, lng: -84.58511178527453 },
+  //   {id: 4, name: 'Jolley Lodge', lat: 34.041975382594565, lng: -84.58503997779815 },
+  //   {id: 5, name: 'Bailey Performance Center', lat: 34.04104538235975, lng: -84.58388467029071 },
+  //   {id: 6, name: 'Zuckerman Museum', lat: 34.041127569948884,lng: -84.58332319433181 },
+  //   {id: 7, name: 'Wellstar College of Health and Human Services', lat: 34.04126007515278, lng: -84.5823230947359 },
+  //   {id: 8, name: 'Wellstar College of Health and Human Services', lat: 34.04040804794117, lng: -84.58227837728104 },
+  //   {id: 9, name: 'Wellstar College of Health and Human Services', lat: 34.04049249904415, lng: -84.58162052602621 },
+  //   {id: 10, name: 'Central Parking Deck', lat: 34.04091628989932, lng: -84.58155510939581 },
+  //   {id: 11, name: 'Visual Arts', lat: 34.04014013820758, lng: -84.58495900426912 },
+  //   {id: 12, name: 'Wilson Annex', lat: 34.040382041842314, lng: -84.58407716154898 },
+  //   {id: 13, name: 'Wilson Building', lat: 34.04021534710124, lng: -84.5831444233547 },
+  //   {id: 14, name: 'Music Building', lat: 34.040181974276315, lng: -84.58287930990906 },
+  //   {id: 15, name: 'The Commons', lat: 34.040112254887596, lng: -84.5822049725835 },
+  //   {id: 16, name: 'Burruss Building', lat: 34.03916307618097, lng: -84.58182548615811 },
+  //   {id: 17, name: 'Burruss Building', lat: 34.039334634541554, lng: -84.58151844214942 },
+  //   {id: 18, name: 'Bagwell Education Building', lat: 34.0396379119677, lng: -84.58087532494412 },
+  //   {id: 19, name: 'Bagwell Education Building', lat: 34.039037425081695, lng: -84.5809418434928 },
+  //   {id: 20, name: 'Kennesaw Hall', lat: 34.03889684364226, lng: -84.580944525696 },
+  //   {id: 21, name: 'Kennesaw Hall', lat: 34.037958423913985, lng: -84.5807963755791 },
+  //   {id: 22, name: 'Kennesaw Hall', lat: 34.03813234820042, lng: -84.58038669152127 },
+  //   {id: 23, name: 'Convocation Center', lat: 34.03739857647659, lng: -84.5804216302843 },
+  //   {id: 24, name: 'Siegel Student Recreation & Activities Center', lat: 34.03685306796862, lng: -84.58134592872163 },
+  //   {id: 25, name: 'Siegel Student Recreation & Activities Center', lat: 34.03685051220012, lng: -84.58239021303122 },
+  //   {id: 26, name: 'Siegel Student Recreation & Activities Center', lat: 34.03752287232788, lng: -84.58220111729591 },
+  //   {id: 27, name: 'East Parking Deck', lat: 34.0366216129326, lng: -84.58115296368257 },
+  //   {id: 28, name: 'University Bookstore', lat: 34.03785497707045, lng: -84.5831169079928 },
+  //   {id: 29, name: 'Sturgis Library', lat: 34.03817439372666, lng: -84.58373969823 },
+  //   {id: 30, name: 'Pilcher Building', lat: 34.038288000488095, lng: -84.58447613924874 },
+  //   {id: 31, name: 'Pilcher Building', lat: 34.03806406828368, lng: -84.58431721837084 },
+  //   {id: 32, name: 'Technology Annex', lat: 34.03786021162154, lng: -84.58464920626845 },
+  //   {id: 33, name: 'Mathematics and Statistics', lat: 34.03772185089651, lng: -84.58383582638564 },
+  //   {id: 34, name: 'Public Safety', lat: 34.03779644824888, lng: -84.58507185459054 },
+  //   {id: 35, name: 'Office of Institutional Research', lat: 34.03693417640655, lng: -84.58675097542397 },
+  //   {id: 36, name: 'Institute for Cybersecurity Workforce Development', lat: 34.0366027572148, lng: -84.58695333977656 },
+  //   {id: 37, name: 'Catholic Center at KSU', lat: 34.03634308250317, lng: -84.5868852037043 },
+  //   {id: 38, name: 'Science Building', lat: 34.036176140973545, lng: -84.5838534655383 },
+  //   {id: 39, name: 'Clendenin Building', lat: 34.035990222567854, lng: -84.5832859278377 },
+  //   {id: 40, name: 'Science Laboratory', lat: 34.0358330372012, lng: -84.58378799464447 },
+  //   {id: 41, name: 'Town Point Office of Undergraduate Admissions', lat: 34.030192038882014, lng: -84.5812208966054 },
+  //   {id: 42, name: 'Town Point Office of Undergraduate Admissions', lat: 34.02995662532501, lng: -84.581545605683 },
+  //   {id: 43, name: 'Student Athlete Success Services', lat: 34.02971179412259, lng: -84.58461356049521 },
+  //   {id: 44, name: 'Owls Nest', lat: 34.029991983405665, lng: -84.57001181566912 },
+  //   {id: 45, name: 'KSU Center', lat: 34.03153703386949, lng: -84.57355444798323 },
+  //   {id: 46, name: 'KSU Center', lat: 34.031628424526644, lng: -84.57475627461659 },
+  //   {id: 47, name: 'KSU Center', lat: 34.030627036521274, lng: -84.5748219887467 },
+  //   {id: 48, name: 'KSU Center', lat: 34.03052548858506, lng: -84.57358939259085 },
+  //   {id: 49, name: 'Public Safety', lat: 34.027141980291134, lng: -84.56971263811648 },
+  //   {id: 50,  name: 'Carmichael Student Center', lat: 34.038533480073355, lng: -84.5831447839737 },
+  //   {id: 51,  name: 'Carmichael Student Center', lat: 34.038660170620055, lng: -84.58283364772798 },
+  //   {id: 52, name: 'Academic Learning Center', lat: 34.03931806936354, lng: -84.58317697048189 },
+  //   {id: 53, name: 'Academic Learning Center', lat: 34.03978259614599, lng: -84.58298921585084 },
+  //   {id: 54, name: 'English Building', lat: 34.03942475516541, lng: -84.58414524793626,  },
+  //   {id: 55, name: 'English Building', lat: 34.03910025210137, lng: -84.5841532945633 },
+  //   {id: 56, name: 'English Building', lat: 34.03979815441523, lng: -84.58402454853059 },
+  //   {id: 57, name: 'University Hall', lat: 34.038938000103784, lng: -84.58437055349351 },
+  //   {id: 58, name: 'Willingham Hall', lat: 34.038973562212, lng: -84.58483189344408  },
+  //   {id: 59, name: 'Social Sciences', lat: 34.03870240076022, lng: -84.58521813154222 },
   // ];
 
-  /* Testing Locations */ 
-  // const locations = [
-  //   { name: "Wellstar College of Health and Human", lat: 34.038, lng: -84.615},
-  //   { name: "Stillwell Theater", lat: 34.034, lng: -84.608},
-  //   { name: "The Commons", lat: 34.037, lng: -84.610},
-  //   { name: "Testing House", lat: 34.003144766497456, lng: -84.57567354414421},
-  //   { name: "Middle of nowhere", lat: 34.00066396294443, lng: -84.85132638295222},
-  //   { name: "Publix", lat: 34.0295784043314, lng: -84.77891916590933},
-  //   { name: "Burruss Building", lat: 34.03937990713855, lng: -84.58183666658006},
-  //   { name: "Hill", lat: 33.994277808401854, lng: -84.58158428693656}
-  // ];
-
-  const locations = [
-    { name: "Wellstar College of Health and Human Services", lat: 34.04051341627655, lng: -84.58183351658764},
-    { name: "Stillwell Theater", lat: 34.04041596924026, lng: -84.58335836136933},
-    { name: "The Commons", lat: 34.04004730043029, lng: -84.58221003852805},
-    { name: "Burruss Building", lat: 34.03937990713855, lng: -84.58183666658006},
-    { name: "Kennesaw Hall", lat: 34.03871440490257, lng: -84.58058187670002},
-    { name: "Horace W. Sturgis Library", lat: 34.0383758124037, lng: -84.58393616382452},
-    { name: "Mathematics and Statistics", lat: 34.037722276437805, lng: -84.58417005620913},
-
-  ];
-  const accessibleDoors = [
-    {id: 1, name: "Burruss Building", lat: 34.03918, lng: -84.58182}
-  ];
-
+  const filteredLocations = locations.filter((location) =>
+    location.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   {/* What the side buttons will do */}
   const openLoginModal = () => {
@@ -120,7 +166,8 @@ function App() {
   }
 
   const openCreateAccountModal = () => {
-    setIsLoginModalOpen(true);
+    setIsLoginModalOpen(false);
+    setIsCreateAccountModalOpen(true);
   }
 
   const closeCreateAccountModal = () => {
@@ -143,12 +190,31 @@ function App() {
     setShowDropdown(true);
   };
 
+  const getStrokeColor = (elevationChange) => {
+    const num = parseFloat(elevationChange); 
+  
+    if (num <= 0.5) {
+      // Light Green to Dark Green
+      const intensity = Math.max(155, Math.round(255 - (num / 0.5) * 100));
+      return `rgb(0, ${intensity}, 0)`;
+    } else if (num <= 1.5) {
+      // Light Yellow to Dark Yellow
+      const intensity = Math.max(155, Math.round(255 - ((num - 0.5) / 1) * 100));
+      return `rgb(${intensity}, ${intensity}, 0)`;
+    } else {
+      // Light Red to Dark Red (capped at 155 so it never turns black)
+      const intensity = Math.max(155, Math.round(255 - ((num - 1.5) / 2) * 100));
+      return `rgb(${intensity}, 0, 0)`;
+    }
+  };
+
 
   const handleLocationClick = (location) => {
     setSearchQuery(location.name);
     setShowDropdown(false);
-    /* Update this later to query the coordinates from the database */ 
+    /* Update this later to query the lat from the database */ 
     setDestination({lat: location.lat, lng: location.lng})
+    console.log(destination)
     setAccessibleDoorLocations([]);
     setDirections([]);
     setPolylineSegments([]);
@@ -247,18 +313,24 @@ function App() {
   return (
     <div className={`app ${highContrast ? "high-contrast" : ""}`}>
       <div
-        className={`overlay ${sideNavOpen ? "open" : ""}`}
-        onClick={toggleSideNav}>
-      </div>
-      <div
-        id="mySidenav"
-        className={`sidenav ${sideNavOpen ? "open" : ""}`}>
-        <button className="closebtn" onClick={toggleSideNav}>&times;</button>
-        <a href="#">thing 1</a>
-        <a href="#">thing 2</a>
-        <a href="#">thing 3</a>
-        <a href="#">thing 4</a>
-      </div>
+          className={`sidebar-indicator ${sideNavOpen ? "hidden" : ""}`}
+          onClick={toggleSideNav}
+        ></div>
+        <div
+          className={`overlay ${sideNavOpen ? "open" : ""}`}
+          onClick={toggleSideNav}
+        ></div>
+        <div
+          id="mySidenav"
+          className={`sidenav ${sideNavOpen ? "open" : ""}`}
+        >
+          <button className="closebtn" onClick={toggleSideNav}>&times;</button>
+          <div className="sidebar-footer">
+            <h4>Quick Links</h4>
+          <a href="https://www.kennesaw.edu/docs/kennesaw-map.pdf" target="_blank" rel="noopener noreferrer">Kennesaw State University - Kennesaw Campus</a>
+          <a href="https://www.kennesaw.edu/docs/marietta-map.pdf" target="_blank" rel="noopener noreferrer">Kennesaw State University - Marietta Campus</a>
+          </div>
+        </div>
 
       {/* Main content */}
       <div
@@ -279,7 +351,7 @@ function App() {
             />
             {showDropdown && (
               <div className="dropdown">
-                {locations.map((location, index) => (
+                {filteredLocations.map((location, index) => (
                   <div
                     key={index}
                     className="dropdown-item"
@@ -314,7 +386,7 @@ function App() {
             <div className="map-placeholder"> 
             {/* Placed the map function here for now
                 Testing it out by manually adding the 
-                coordinates into the parameters */}
+                lat into the parameters */}
             <LoadScript googleMapsApiKey={apiKey} libraries={libraries}>
               <GoogleMap
                 mapContainerStyle={mapContainerStyle}
@@ -333,6 +405,7 @@ function App() {
                   />
                 )}
                 {destination && (
+                  
                   <Marker
                     position={destination}
                     icon={{
@@ -397,42 +470,60 @@ function App() {
             </LoadScript>
           </div>
           
-          {/* Display the route information */}
           <div className="directions-info">
-            {directions && (
-              <>
-                <div>{`Duration: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</div>
-                <div>{`Distance: ${distance}ft`}</div>
-              </>
-            )}
-            {/* Routes with no elevation */}
-            {routeType !== "lowElevation" && (
-               steps && steps.map((step, index) => (
-                  <li key={index}>{`${step.html_instructions} in ${(step.distance).toFixed(1)}ft`}</li>
-                ))
-              )}
-            {/* Routes with elevation */}
-            {routeType === "lowElevation" && (
-              steps && steps.map((step, index) => (
+  {/* Route Duration & Distance */}
+  {directions && (
+    <div className="route-summary">
+      <h2>Route Information</h2>
+      <p>{`🕒 Duration: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</p>
+      <p>{`📏 Distance: ${distance} ft`}</p>
+    </div>
+  )}
 
-                <li key={index}>
-                  {`${step.instruction} in ${(step.distance).toFixed(1)} ft`}
-                  {step.elevation !== undefined ? ` (Elevation: ${step.elevation.toFixed(2)}m)`: ""}
-                  {index > 0 && elevationChanges[index] !== undefined ? ` (Change: ${elevationChanges[index]}m)` : ""}
-                </li>
-                
-              ))
-            )}
-            
+  <div className="instructions-scrollbox">
+    <ol className="instruction-list">
+      {steps && steps.map((step, index) => (
+        <li key={index} className={`instruction-card ${routeType === "lowElevation" ? "elevation" : ""}`}>
+          <div className="instruction-header">
+            <div className="step-number">{index + 1}</div>
+            <div className="instruction-text" dangerouslySetInnerHTML={{ __html: step.html_instructions }} />
           </div>
+
+          <div className="instruction-detail">
+             Distance: <span>{(step.distance).toFixed(1)} ft</span>
+          </div>
+
+          {routeType === "lowElevation" && (
+            <>
+              <div className="instruction-detail">
+                Elevation: <span>{step.elevation !== undefined ? `${step.elevation.toFixed(2)}m` : "N/A"}</span>
+              </div>
+              {elevationChanges[index] !== undefined && (
+                <div className={`instruction-detail change ${elevationChanges[index] > 0 ? "up" : "down"}`}>
+                  Change: <span
+                    className="elevation-badge"
+                    style={{
+                      backgroundColor: getStrokeColor(elevationChanges[index])
+                    }}
+                  >{elevationChanges[index]}m</span>
+                </div>
+              )}
+            </>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
+</div>
+
  
           {/* Accessibility Features */}    
           {/* Action Buttons */}
           <div className="action-buttons">
-            <button onClick={openLoginModal}><FontAwesomeIcon icon={faArrowRightToBracket}/></button>
-            <button onClick={handleZoomIn}><FontAwesomeIcon icon={faPlus}/></button>
-            <button onClick={handleZoomOut}><FontAwesomeIcon icon={faMinus}/></button>
-            <button onClick={fetchLocation}><FontAwesomeIcon icon={faLocationArrow}/></button>
+            <button onClick={openLoginModal}><FontAwesomeIcon icon={faArrowRightToBracket}/>Login</button>
+            <button onClick={handleZoomIn}><FontAwesomeIcon icon={faPlus}/>Zoom In</button>
+            <button onClick={handleZoomOut}><FontAwesomeIcon icon={faMinus}/>Zoom Out</button>
+            <button onClick={fetchLocation}><FontAwesomeIcon icon={faLocationArrow}/>Location</button>
             <button onClick={handleShowRoute}>Show Route</button>
           </div>
         </div>

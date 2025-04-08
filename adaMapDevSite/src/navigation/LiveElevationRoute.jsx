@@ -22,10 +22,7 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolyli
   const lastPositionRef = useRef(null);
   const [steps, setSteps] = useState([]);
   const [elevationChanges, setElevationChanges] = useState([]);
-  // const [routeLoaded, setRouteLoaded] = useState(false);
-  // const [globalPolyline, setGlobalPolyline] = useState(null);
-
-  // Get the location of the user 
+  
 
 
   // Used to calculate the distance between two different locations
@@ -46,13 +43,34 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolyli
     return R * c; // Distance in meters
   };
 
+  /* Returns the color of the elevation gain = */
+  // const getStrokeColor = (elevationChange) => {
+  //   const num = parseInt(elevationChange)
+  //   /* Change the text to an integer */
+  //   if (num > 1.5) return "red"; // Large change
+  //   if (num > 0.5) return "yellow"; // Medium change
+  //   return "green"; // Small change
+  // };
+
   const getStrokeColor = (elevationChange) => {
-    const num = parseInt(elevationChange)
-    /* Change the text to an integer */
-    if (num > 1.5) return "red"; // Large change
-    if (num > 0.5) return "yellow"; // Medium change
-    return "green"; // Small change
+    const num = parseFloat(elevationChange); 
+  
+    if (num <= 0.5) {
+      // Light Green to Dark Green
+      const intensity = Math.max(155, Math.round(255 - (num / 0.5) * 100));
+      return `rgb(0, ${intensity}, 0)`;
+    } else if (num <= 1.5) {
+      // Light Yellow to Dark Yellow
+      const intensity = Math.max(155, Math.round(255 - ((num - 0.5) / 1) * 100));
+      return `rgb(${intensity}, ${intensity}, 0)`;
+    } else {
+      // Light Red to Dark Red (capped at 155 so it never turns black)
+      const intensity = Math.max(155, Math.round(255 - ((num - 1.5) / 2) * 100));
+      return `rgb(${intensity}, 0, 0)`;
+    }
   };
+  
+  
 
 
   useEffect(() => {
@@ -118,8 +136,14 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolyli
               ).then((stepsWithElevation) => {
                 // This has all the details on the route 
                 console.log(stepsWithElevation);
-                const elevationChanges = stepsWithElevation.map((step, index, arr) => 
-                  index > 0 ? (step.elevation - arr[index - 1].elevation).toFixed(2) : 0
+                const elevationChanges = stepsWithElevation.map((step, index, arr) => {
+                  if (index < arr.length - 1) {
+                    return (arr[index + 1].elevation - step.elevation).toFixed(2);
+                  } else {
+                    return 0;
+                  }
+                }
+                  // index > 0 ? (step.elevation - arr[index - 1].elevation).toFixed(2) : 0
                 );
 
                 // This is returning undefined array of legnth steps

@@ -78,10 +78,6 @@ def get_route():
 
     ]
 
-    ## for step in leg.get("steps", [])]
-       ##         } for leg in legs]
-    ##
-
     route = data['routes'][0]
     legs = route["legs"]
     return jsonify({
