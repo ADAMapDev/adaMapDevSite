@@ -55,9 +55,16 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolyli
   const getStrokeColor = (elevationChange) => {
     const num = parseFloat(elevationChange); 
   
-    if (num <= 0.5) {
+    if (num < 0) {
+      // Teal color
+      const magnitude = Math.min(Math.abs(num), 1.5);
+      const green = Math.round(200 - magnitude * 30);
+      const blue = Math.round(180 - magnitude * 10);
+      return `rgb(0, ${green}, ${blue})`;
+    }
+    else if (num <= 0.5) {
       // Light Green to Dark Green
-      const intensity = Math.max(155, Math.round(255 - (num / 0.5) * 100));
+      const intensity = Math.max(120, Math.round(120 - (num / 0.5) * 60));
       return `rgb(0, ${intensity}, 0)`;
     } else if (num <= 1.5) {
       // Light Yellow to Dark Yellow

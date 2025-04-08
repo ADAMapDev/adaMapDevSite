@@ -50,6 +50,7 @@ function App() {
   const [apiKey, setApiKey] = useState("");
   const [locations, setLocations] = useState([]);
   const [accessibleDoors, setAccessibleDoors] = useState([]);
+  const [accessibleDoorEnabled, setAccessibleDoorEnabled] = useState(false);
 
   const BACKEND_URL = "http://localhost:5000";
 
@@ -193,9 +194,16 @@ function App() {
   const getStrokeColor = (elevationChange) => {
     const num = parseFloat(elevationChange); 
   
-    if (num <= 0.5) {
+    if (num < 0) {
+      // Teal Color
+      const magnitude = Math.min(Math.abs(num), 1.5);
+      const green = Math.round(200 - magnitude * 30);
+      const blue = Math.round(180 - magnitude * 10);
+      return `rgb(0, ${green}, ${blue})`;
+    }
+    else if (num <= 0.5) {
       // Light Green to Dark Green
-      const intensity = Math.max(155, Math.round(255 - (num / 0.5) * 100));
+      const intensity = Math.max(120, Math.round(120 - (num / 0.5) * 60));
       return `rgb(0, ${intensity}, 0)`;
     } else if (num <= 1.5) {
       // Light Yellow to Dark Yellow
@@ -372,8 +380,8 @@ function App() {
             <span></span>Reset Options</button>
           <button onClick={() => setRouteType("wheelchair")}>
             <span><FontAwesomeIcon icon={faWheelchair}/></span>Wheelchair Accessible</button>
-          <button onClick={() => setRouteType("accessibleDoor")}>
-            <span><FontAwesomeIcon icon={faDoorClosed}/></span>Accessible Door</button>
+          <button onClick={() => setAccessibleDoorEnabled(prev => !prev)}>
+            <span><FontAwesomeIcon icon={faDoorClosed}/></span>{accessibleDoorEnabled ? "Accessible Door: On": "Accessible Door: Off"}</button>
           <button onClick={() => setRouteType("lowElevation")}>
             <span><FontAwesomeIcon icon={faMound}/></span>Low Elevation Change</button>
         </div>
@@ -416,7 +424,7 @@ function App() {
                 )}
 
                 {/* Markers for Accessible Entrances */}
-                {routeType === "accessibleDoor" && accessibleDoorLocations.map((door) => (
+                {accessibleDoorEnabled && accessibleDoorLocations.map((door) => (
                   <Marker
                     key={door.id}
                     position={{ lat: door.lat, lng: door.lng}}
