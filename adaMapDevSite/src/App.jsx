@@ -13,6 +13,7 @@ import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faMinus } from '@fortawesome/free-solid-svg-icons'
 import wheelchairIcon from "./assets/wheelchair_icon.png"
+import BACKEND_URL from "./utils/url"
 
 /* Properties of the map */
 const libraries = ["places", "geometry"];
@@ -52,7 +53,8 @@ function App() {
   const [accessibleDoors, setAccessibleDoors] = useState([]);
   const [accessibleDoorEnabled, setAccessibleDoorEnabled] = useState(false);
 
-  const BACKEND_URL = "http://localhost:5000";
+  // const BACKEND_URL = "http://localhost:5000";
+  // const BACKEND_URL = "https://3391-168-28-186-189.ngrok-free.app"
 
   /* Retrieve API key for map */ 
   useEffect(() => {

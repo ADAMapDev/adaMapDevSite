@@ -1,7 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useRef} from "react"
+import BACKEND_URL from ".././utils/url"
 
-const BACKEND_URL = "http://localhost:5000";
+
+// const BACKEND_URL = "http://localhost:5000";
+// const BACKEND_URL = "https://3391-168-28-186-189.ngrok-free.app"
 
 /*
 *
