@@ -1,3 +1,5 @@
+from urllib.parse import urlparse
+
 import psycopg2
 from flask import Flask, jsonify, Blueprint
 import os
@@ -8,12 +10,25 @@ app = Flask(__name__)
 
 
 def get_db_connection():
+    # return psycopg2.connect(
+    #     dbname=os.getenv('DB_NAME'),
+    #     user=os.getenv('DB_USER'),
+    #     password=os.getenv('DB_PASSWORD'),
+    #     host=os.getenv('DB_HOST'),
+    #     port=os.getenv('DB_PORT'),
+    # )
+    database_url = os.getenv('DB_URL')
+
+    # Parse the URL to extract the components
+    result = urlparse(database_url)
+
+    # Create the connection using parsed components
     return psycopg2.connect(
-        dbname=os.getenv('DB_NAME'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD'),
-        host=os.getenv('DB_HOST'),
-        port=os.getenv('DB_PORT'),
+        dbname=result.path[1:],  # Remove the leading '/' from the dbname
+        user=result.username,
+        password=result.password,
+        host=result.hostname,
+        port=result.port
     )
 
 @get_building.route('/buildings', methods=['GET'])
