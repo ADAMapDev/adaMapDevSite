@@ -483,7 +483,7 @@ function App() {
   {directions && (
     <div className="route-summary">
       <h2>Route Information</h2>
-      <p><FontAwesomeIcon icon={faClock} style={{color: "#a1a1a1",}} />{`Duration: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</p>
+      <p><FontAwesomeIcon icon={faClock} style={{color: "#575757",}} />{`Duration: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</p>
       <p><FontAwesomeIcon icon={faRuler} style={{ color: "#FFB900" }} /> {`Distance: ${distance} ft`}</p>
     </div>
   )}
