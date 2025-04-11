@@ -483,8 +483,8 @@ function App() {
   {directions && (
     <div className="route-summary">
       <h2>Route Information</h2>
-      <p>{`🕒 Duration: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</p>
-      <p>{`📏 Distance: ${distance} ft`}</p>
+      <p><FontAwesomeIcon icon={faClock} style={{color: "#a1a1a1",}} />{`Duration: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</p>
+      <p><FontAwesomeIcon icon={faRuler} style={{ color: "#FFB900" }} /> {`Distance: ${distance} ft`}</p>
     </div>
   )}
 
@@ -528,10 +528,10 @@ function App() {
           {/* Accessibility Features */}    
           {/* Action Buttons */}
           <div className="action-buttons">
-            <button onClick={openLoginModal}><FontAwesomeIcon icon={faArrowRightToBracket}/>Login</button>
-            <button onClick={handleZoomIn}><FontAwesomeIcon icon={faPlus}/>Zoom In</button>
-            <button onClick={handleZoomOut}><FontAwesomeIcon icon={faMinus}/>Zoom Out</button>
-            <button onClick={fetchLocation}><FontAwesomeIcon icon={faLocationArrow}/>Location</button>
+            <button onClick={openLoginModal}><FontAwesomeIcon icon={faArrowRightToBracket} style={{color: "#000000",}}/>Login</button>
+            <button onClick={handleZoomIn}><FontAwesomeIcon icon={faPlus} style={{color: "#000000",}}/>Zoom In</button>
+            <button onClick={handleZoomOut}><FontAwesomeIcon icon={faMinus} style={{color: "#000000",}}/>Zoom Out</button>
+            <button onClick={fetchLocation}><FontAwesomeIcon icon={faLocationArrow} style={{color: "#000000",}}/>Location</button>
             <button onClick={handleShowRoute}>Show Route</button>
           </div>
         </div>
