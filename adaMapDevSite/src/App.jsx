@@ -5,6 +5,7 @@ import UserRegularRouteComponent from "./navigation/UserRegularRoute";
 import LiveElevationRouteComponent from "./navigation/LiveElevationRoute";
 import LocationTracker from "./utils/LocationTracker";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
 import { faWheelchair } from '@fortawesome/free-solid-svg-icons'
 import { faDoorClosed } from '@fortawesome/free-solid-svg-icons'
 import { faMound } from '@fortawesome/free-solid-svg-icons'
@@ -12,15 +13,17 @@ import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faMinus } from '@fortawesome/free-solid-svg-icons'
+import { faClock } from '@fortawesome/free-solid-svg-icons'
+import { faRuler } from '@fortawesome/free-solid-svg-icons'
 import wheelchairIcon from "./assets/wheelchair_icon.png"
 
 /* Properties of the map */
 const libraries = ["places", "geometry"];
 /* Centers around Kennesaw State */
 const center = { lat: 34.0384731003286, lng: -84.58150433167211 };
-const mapContainerStyle = {
-  width: "1400px",
-  height: "800px"
+const mapContainerStyle = { /* map size */
+  width: "1000px",
+  height: "600px"
 };
 
 function App() {
@@ -48,7 +51,9 @@ function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCreateAccountModalOpen, setIsCreateAccountModalOpen] = useState(false);
   const [apiKey, setApiKey] = useState("");
-  const [locations, setLocations] = useState([]);
+  //const [locations, setLocations] = useState([]);
+  const [setLocations] = useState([]);
+
   const [accessibleDoors, setAccessibleDoors] = useState([]);
   const [accessibleDoorEnabled, setAccessibleDoorEnabled] = useState(false);
 
@@ -90,68 +95,6 @@ function App() {
     }
     getAccessibleDoors();
   }, []);
-  
-
-  // const accessibleDoors = [
-  //   {id: 1, name: 'Burruss Building', lat: 34.03916307618097, lng: -84.58182548615811 },
-  //   {id: 2, name: 'Technology Services', lat: 34.04324444304241, lng: -84.58511178527453 },
-  //   {id: 4, name: 'Jolley Lodge', lat: 34.041975382594565, lng: -84.58503997779815 },
-  //   {id: 5, name: 'Bailey Performance Center', lat: 34.04104538235975, lng: -84.58388467029071 },
-  //   {id: 6, name: 'Zuckerman Museum', lat: 34.041127569948884,lng: -84.58332319433181 },
-  //   {id: 7, name: 'Wellstar College of Health and Human Services', lat: 34.04126007515278, lng: -84.5823230947359 },
-  //   {id: 8, name: 'Wellstar College of Health and Human Services', lat: 34.04040804794117, lng: -84.58227837728104 },
-  //   {id: 9, name: 'Wellstar College of Health and Human Services', lat: 34.04049249904415, lng: -84.58162052602621 },
-  //   {id: 10, name: 'Central Parking Deck', lat: 34.04091628989932, lng: -84.58155510939581 },
-  //   {id: 11, name: 'Visual Arts', lat: 34.04014013820758, lng: -84.58495900426912 },
-  //   {id: 12, name: 'Wilson Annex', lat: 34.040382041842314, lng: -84.58407716154898 },
-  //   {id: 13, name: 'Wilson Building', lat: 34.04021534710124, lng: -84.5831444233547 },
-  //   {id: 14, name: 'Music Building', lat: 34.040181974276315, lng: -84.58287930990906 },
-  //   {id: 15, name: 'The Commons', lat: 34.040112254887596, lng: -84.5822049725835 },
-  //   {id: 16, name: 'Burruss Building', lat: 34.03916307618097, lng: -84.58182548615811 },
-  //   {id: 17, name: 'Burruss Building', lat: 34.039334634541554, lng: -84.58151844214942 },
-  //   {id: 18, name: 'Bagwell Education Building', lat: 34.0396379119677, lng: -84.58087532494412 },
-  //   {id: 19, name: 'Bagwell Education Building', lat: 34.039037425081695, lng: -84.5809418434928 },
-  //   {id: 20, name: 'Kennesaw Hall', lat: 34.03889684364226, lng: -84.580944525696 },
-  //   {id: 21, name: 'Kennesaw Hall', lat: 34.037958423913985, lng: -84.5807963755791 },
-  //   {id: 22, name: 'Kennesaw Hall', lat: 34.03813234820042, lng: -84.58038669152127 },
-  //   {id: 23, name: 'Convocation Center', lat: 34.03739857647659, lng: -84.5804216302843 },
-  //   {id: 24, name: 'Siegel Student Recreation & Activities Center', lat: 34.03685306796862, lng: -84.58134592872163 },
-  //   {id: 25, name: 'Siegel Student Recreation & Activities Center', lat: 34.03685051220012, lng: -84.58239021303122 },
-  //   {id: 26, name: 'Siegel Student Recreation & Activities Center', lat: 34.03752287232788, lng: -84.58220111729591 },
-  //   {id: 27, name: 'East Parking Deck', lat: 34.0366216129326, lng: -84.58115296368257 },
-  //   {id: 28, name: 'University Bookstore', lat: 34.03785497707045, lng: -84.5831169079928 },
-  //   {id: 29, name: 'Sturgis Library', lat: 34.03817439372666, lng: -84.58373969823 },
-  //   {id: 30, name: 'Pilcher Building', lat: 34.038288000488095, lng: -84.58447613924874 },
-  //   {id: 31, name: 'Pilcher Building', lat: 34.03806406828368, lng: -84.58431721837084 },
-  //   {id: 32, name: 'Technology Annex', lat: 34.03786021162154, lng: -84.58464920626845 },
-  //   {id: 33, name: 'Mathematics and Statistics', lat: 34.03772185089651, lng: -84.58383582638564 },
-  //   {id: 34, name: 'Public Safety', lat: 34.03779644824888, lng: -84.58507185459054 },
-  //   {id: 35, name: 'Office of Institutional Research', lat: 34.03693417640655, lng: -84.58675097542397 },
-  //   {id: 36, name: 'Institute for Cybersecurity Workforce Development', lat: 34.0366027572148, lng: -84.58695333977656 },
-  //   {id: 37, name: 'Catholic Center at KSU', lat: 34.03634308250317, lng: -84.5868852037043 },
-  //   {id: 38, name: 'Science Building', lat: 34.036176140973545, lng: -84.5838534655383 },
-  //   {id: 39, name: 'Clendenin Building', lat: 34.035990222567854, lng: -84.5832859278377 },
-  //   {id: 40, name: 'Science Laboratory', lat: 34.0358330372012, lng: -84.58378799464447 },
-  //   {id: 41, name: 'Town Point Office of Undergraduate Admissions', lat: 34.030192038882014, lng: -84.5812208966054 },
-  //   {id: 42, name: 'Town Point Office of Undergraduate Admissions', lat: 34.02995662532501, lng: -84.581545605683 },
-  //   {id: 43, name: 'Student Athlete Success Services', lat: 34.02971179412259, lng: -84.58461356049521 },
-  //   {id: 44, name: 'Owls Nest', lat: 34.029991983405665, lng: -84.57001181566912 },
-  //   {id: 45, name: 'KSU Center', lat: 34.03153703386949, lng: -84.57355444798323 },
-  //   {id: 46, name: 'KSU Center', lat: 34.031628424526644, lng: -84.57475627461659 },
-  //   {id: 47, name: 'KSU Center', lat: 34.030627036521274, lng: -84.5748219887467 },
-  //   {id: 48, name: 'KSU Center', lat: 34.03052548858506, lng: -84.57358939259085 },
-  //   {id: 49, name: 'Public Safety', lat: 34.027141980291134, lng: -84.56971263811648 },
-  //   {id: 50,  name: 'Carmichael Student Center', lat: 34.038533480073355, lng: -84.5831447839737 },
-  //   {id: 51,  name: 'Carmichael Student Center', lat: 34.038660170620055, lng: -84.58283364772798 },
-  //   {id: 52, name: 'Academic Learning Center', lat: 34.03931806936354, lng: -84.58317697048189 },
-  //   {id: 53, name: 'Academic Learning Center', lat: 34.03978259614599, lng: -84.58298921585084 },
-  //   {id: 54, name: 'English Building', lat: 34.03942475516541, lng: -84.58414524793626,  },
-  //   {id: 55, name: 'English Building', lat: 34.03910025210137, lng: -84.5841532945633 },
-  //   {id: 56, name: 'English Building', lat: 34.03979815441523, lng: -84.58402454853059 },
-  //   {id: 57, name: 'University Hall', lat: 34.038938000103784, lng: -84.58437055349351 },
-  //   {id: 58, name: 'Willingham Hall', lat: 34.038973562212, lng: -84.58483189344408  },
-  //   {id: 59, name: 'Social Sciences', lat: 34.03870240076022, lng: -84.58521813154222 },
-  // ];
 
   const filteredLocations = locations.filter((location) =>
     location.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -215,7 +158,6 @@ function App() {
       return `rgb(${intensity}, 0, 0)`;
     }
   };
-
 
   const handleLocationClick = (location) => {
     setSearchQuery(location.name);
@@ -320,7 +262,7 @@ function App() {
 {/* Side navigation bar */}
   return (
     <div className={`app ${highContrast ? "high-contrast" : ""}`}>
-      <div
+        <div
           className={`sidebar-indicator ${sideNavOpen ? "hidden" : ""}`}
           onClick={toggleSideNav}
         ></div>
@@ -332,11 +274,11 @@ function App() {
           id="mySidenav"
           className={`sidenav ${sideNavOpen ? "open" : ""}`}
         >
-          <button className="closebtn" onClick={toggleSideNav}>&times;</button>
-          <div className="sidebar-footer">
+          <button className="close-btn" onClick={toggleSideNav}>&times;</button>
+          <div className="sidenav-footer">
             <h4>Quick Links</h4>
-          <a href="https://www.kennesaw.edu/docs/kennesaw-map.pdf" target="_blank" rel="noopener noreferrer">Kennesaw State University - Kennesaw Campus</a>
-          <a href="https://www.kennesaw.edu/docs/marietta-map.pdf" target="_blank" rel="noopener noreferrer">Kennesaw State University - Marietta Campus</a>
+          <a href="https://www.kennesaw.edu/docs/kennesaw-map.pdf" target="_blank" rel="noopener noreferrer">Kennesaw State University Kennesaw Campus</a>
+          <a href="https://www.kennesaw.edu/docs/marietta-map.pdf" target="_blank" rel="noopener noreferrer">Kennesaw State University Marietta Campus</a>
           </div>
         </div>
 
@@ -344,7 +286,10 @@ function App() {
       <div
         id="main"
         className={sideNavOpen ? "shifted" : ""}>
-        <span onClick={toggleSideNav} className="open-nav">&#9776;</span>
+        {/* Hamburger Icon aka 3 line menu bars */}
+        <button onClick={toggleSideNav} className={`open-nav-btn ${sideNavOpen ? "hidden" : ""}`}>
+          <FontAwesomeIcon icon={faBars} />
+        </button>
 
       {/* Search bar for address */}
       <div className={`app ${highContrast ? 'high-contrast' : ''}`}>
@@ -472,57 +417,56 @@ function App() {
                     }}
                   />
                 ))
-                
               }
               </GoogleMap>
             </LoadScript>
           </div>
           
           <div className="directions-info">
-  {/* Route Duration & Distance */}
-  {directions && (
-    <div className="route-summary">
-      <h2>Route Information</h2>
-      <p><FontAwesomeIcon icon={faClock} style={{color: "#575757",}} />{`Duration: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</p>
-      <p><FontAwesomeIcon icon={faRuler} style={{ color: "#FFB900" }} /> {`Distance: ${distance} ft`}</p>
-    </div>
-  )}
-
-  <div className="instructions-scrollbox">
-    <ol className="instruction-list">
-      {steps && steps.map((step, index) => (
-        <li key={index} className={`instruction-card ${routeType === "lowElevation" ? "elevation" : ""}`}>
-          <div className="instruction-header">
-            <div className="step-number">{index + 1}</div>
-            <div className="instruction-text" dangerouslySetInnerHTML={{ __html: step.html_instructions }} />
-          </div>
-
-          <div className="instruction-detail">
-             Distance: <span>{(step.distance).toFixed(1)} ft</span>
-          </div>
-
-          {routeType === "lowElevation" && (
-            <>
-              <div className="instruction-detail">
-                Elevation: <span>{step.elevation !== undefined ? `${step.elevation.toFixed(2)}m` : "N/A"}</span>
+            {/* Route Duration & Distance */}
+            {directions && (
+              <div className="route-summary">
+                <h2>Route Information</h2>
+                <p><FontAwesomeIcon icon={faClock} style={{color: "#575757",}} />{` Duration: ${(parseInt(duration, 10) / 60).toFixed(1)} minutes`}</p>
+                <p><FontAwesomeIcon icon={faRuler} style={{ color: "#FFB900" }} /> {` Distance: ${distance} ft`}</p>
               </div>
-              {elevationChanges[index] !== undefined && (
-                <div className={`instruction-detail change ${elevationChanges[index] > 0 ? "up" : "down"}`}>
-                  Change: <span
-                    className="elevation-badge"
-                    style={{
-                      backgroundColor: getStrokeColor(elevationChanges[index])
-                    }}
-                  >{elevationChanges[index]}m</span>
-                </div>
-              )}
-            </>
-          )}
-        </li>
-      ))}
-    </ol>
-  </div>
-</div>
+            )}
+
+            <div className="instructions-scrollbox">
+              <ol className="instruction-list">
+                {steps && steps.map((step, index) => (
+                  <li key={index} className={`instruction-card ${routeType === "lowElevation" ? "elevation" : ""}`}>
+                    <div className="instruction-header">
+                      <div className="step-number">{index + 1}</div>
+                      <div className="instruction-text" dangerouslySetInnerHTML={{ __html: step.html_instructions }} />
+                    </div>
+
+                    <div className="instruction-detail">
+                      Distance: <span>{(step.distance).toFixed(1)} ft</span>
+                    </div>
+
+                    {routeType === "lowElevation" && (
+                      <>
+                        <div className="instruction-detail">
+                          Elevation: <span>{step.elevation !== undefined ? `${step.elevation.toFixed(2)}m` : "N/A"}</span>
+                        </div>
+                        {elevationChanges[index] !== undefined && (
+                          <div className={`instruction-detail change ${elevationChanges[index] > 0 ? "up" : "down"}`}>
+                            Change: <span
+                              className="elevation-badge"
+                              style={{
+                                backgroundColor: getStrokeColor(elevationChanges[index])
+                              }}
+                            >{elevationChanges[index]}m</span>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
 
  
           {/* Accessibility Features */}    
@@ -558,11 +502,14 @@ function App() {
                 Login
               </button>
             </form>
-            <p>
+
+            <p>-OR-</p>
+            
               <a href="#" onClick={openCreateAccountModal}>
-                Create Account
+                <button className="create-acc-btn">
+                  Create Account
+                </button>
               </a>
-            </p>
           </div>
         </div>
       )}

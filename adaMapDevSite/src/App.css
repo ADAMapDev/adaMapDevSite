@@ -6,6 +6,10 @@ body {
     padding: 0;
 }
 
+html, body {  /* fixes the horizontal scroll bar */
+  overflow-x: hidden;
+}
+
 header {
     background-color: #007BFF;
     color: white;
@@ -48,7 +52,7 @@ header {
     right: 10px;
     background: none;
     border: none;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
     color: #666; 
     cursor: pointer;
@@ -58,7 +62,7 @@ header {
   .close-btn:hover {
     color: #ff0000; 
   }
-  
+
   .form-group {
     margin-bottom: 20px;
     text-align: left;
@@ -67,7 +71,7 @@ header {
   label {
     font-family: "Arial", sans-serif;
     font-size: 14px;
-    color: #555;
+    color: #2e3238;
   }
   
   input[type="text"],
@@ -85,13 +89,13 @@ header {
   input[type="email"]:focus,
   input[type="password"]:focus {
     outline: none;
-    border-color: #6200ea; 
+    border-color: #000000; 
   }
   
   .submit-btn {
-    background: #6200ea; 
+    background: #947177;
     color: white;
-    font-size: 14px;
+    font-size: 15px;
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
@@ -100,49 +104,85 @@ header {
   }
   
   .submit-btn:hover {
-    background: #3700b3; 
+    background: #6d5257; 
     transform: scale(1.05);
+  }
+  .submit-btn:active {
+    background-color: #6d5257; 
+    transform: scale(0.95); 
+  }
+  .submit-btn:focus {
+    outline: 2px solid #6d5257; 
+    outline-offset: 2px; 
+  }
+
+
+  .modal p {
+    font-family: "Arial", sans-serif;
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
   }
   
   a {
-    color: #6200ea;
+    color: white;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 14px;
   }
-  
-  a:hover {
-    text-decoration: underline;
+
+  .create-acc-btn {
+    background-color: #575c63; 
+    color: white;
+    border: none;
+    border-radius: 8px; 
+    padding: 10px 20px;
+    font-size: 13px;
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .create-acc-btn:hover {
+    background-color: #2e3238; 
+    transform: scale(1.05); 
+  }
+  .create-acc-btn:active {
+    background-color: #2e3238; 
+    transform: scale(0.95); 
+  }
+  .create-acc-btn:focus {
+    outline: 2px solid #2e3238; 
+    outline-offset: 2px; 
   }
 
   .back-btn {
-    background-color: #007bff; 
+    background-color: #575c63; 
     color: white;
     border: none;
     border-radius: 8px; 
     padding: 10px 20px; 
-    font-size: 14px; 
+    font-size: 13px; 
     cursor: pointer; 
-    transition: background-color 0.3s ease, transform 0.2s ease; 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;  /* add gap between buttons */
   }
   
   .back-btn:hover {
-    background-color: #0056b3; 
+    background-color: #2e3238; 
     transform: scale(1.05); 
   }
-  
+
   .back-btn:active {
-    background-color: #004085; 
+    background-color: #2e3238; 
     transform: scale(0.95); 
   }
   
   .back-btn:focus {
-    outline: 2px solid #0056b3; 
+    outline: 2px solid #2e3238; 
     outline-offset: 2px; 
   }
-  
 
 
-/* Dimming effect */
+/* Dimming effect for rest of screen */
 .overlay {
     position: fixed;
     top: 0;
@@ -155,15 +195,15 @@ header {
     transition: opacity 0.3s ease, visibility 0.3s ease;
     z-index: 1;
 }
-
-/* When the side nav is open, show the overlay */
+/* When the side nav is open, show the dimming overlay over the rest of the screen */
 .overlay.open {
     opacity: 1;
     visibility: visible;
 }
 
- /* Side Navigation */
+ /* Side Navigation appears after open */
 .sidenav {
+    display: flex;
     height: 100%;
     position: fixed;
     z-index: 2;
@@ -176,34 +216,80 @@ header {
     opacity: 0; /* Initially hidden */
     padding-top: 60px;
 }
-
 .sidenav.open {
     transform: translateX(250px); /* Move sidebar into view */
     opacity: 1; /* Fade in */
+    overflow-y: hidden; /* prevents scrolling when sidebar is open */
 }
-
 .sidenav a {
-padding: 8px 8px 8px 32px;
+    padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
     color: #F2D5DB;
     display: block;
     transition: color 0.3s;
 }
-
 .sidenav a:hover {
-    color: #f1f1f1;
+    text-decoration: underline;
 }
-
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
+.sidenav .close-btn {
     right: 25px;
-    font-size: 36px;
     margin-left: 50px;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 36px;
+    font-weight: bold;
+    color: #f4d4dc; 
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.sidenav .close-btn:hover {
+  color: #2e3238; 
 }
 
-/* Sidebar Indicator */
+/* Sidenav Footer */
+.sidenav-footer {
+  margin-top: 125%;
+  padding: 20px;
+  background-color: #4d3b3e;
+  text-align: center;
+  border-top: 2px solid #f2d5db;
+  position: absolute; /* helps it stay at the bottom of the sidenav */
+  bottom: 0; /* Align to the bottom of the sidenav */
+  margin-bottom: 60px;
+}
+.sidenav-footer h4 {
+  margin-bottom: 15px; 
+  font-size: 18px; 
+  color: #f2d5db; 
+  text-transform: uppercase; 
+  font-weight: bold;
+}
+.sidenav-footer ul {
+  list-style-type: none; 
+  padding: 0;
+  margin: 0;
+}
+.sidenav-footer li {
+  margin-bottom: 10px; 
+}
+.sidenav-footer a {
+  font-size: 17px; 
+  color: #f2d5db; 
+  text-decoration: none; 
+  transition: color 0.3s ease; 
+  margin-bottom: 10px;
+  margin-right: 16px;   /* centers the links more */
+}
+.sidenav-footer a:hover {
+  color: #f1f1f1; 
+}
+
+
+/* Sidebar Indicator, shown initially before opening */
 .sidebar-indicator {
   position: fixed;
   top: 0;
@@ -214,49 +300,13 @@ padding: 8px 8px 8px 32px;
   z-index: 3;
   cursor: pointer;
   transition: opacity 0.5s ease, transform 0.5s ease;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3); /
+  /*box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);*/
 }
 
 .sidebar-indicator.hidden {
   opacity: 0; 
   pointer-events: none;
   transform: translateX(-96px); /
-}
-.sidebar-footer {
-  margin-top: 190%; 
-  padding: 20px;
-  background-color: #4d3b3e; 
-  text-align: center;
-  border-top: 2px solid #f2d5db; 
-}
-
-.sidebar-footer h4 {
-  margin-bottom: 15px; 
-  font-size: 18px; 
-  color: #f2d5db; 
-  text-transform: uppercase; 
-  font-weight: bold;
-}
-
-.sidebar-footer ul {
-  list-style-type: none; 
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar-footer li {
-  margin-bottom: 10px; 
-}
-
-.sidebar-footer a {
-  font-size: 17px; 
-  color: #f2d5db; 
-  text-decoration: none; 
-  transition: color 0.3s ease; 
-}
-
-.sidebar-footer a:hover {
-  color: #f1f1f1; 
 }
 
 
@@ -270,11 +320,28 @@ padding: 8px 8px 8px 32px;
 }
 
   /* Open Nav Button */
-.open-nav {
+  /* this is the 3line button, 'hamburger' icon */
+.open-nav-btn {
+    position: relative;
     font-size: 30px;
     cursor: pointer;
-    color: #111;
+    color: #f4d4dc;
+    z-index: 4; /* above sidebar indicator */
+    transition: opacity 0.5s ease, transform 0.5s ease, color 0.5s ease;
+    background-color: transparent;
+    border-color: transparent;
+    margin-left: 14px;
+    margin-top: 13px;
 }
+.open-nav-btn:hover {
+  color: #2e3238; 
+}
+.open-nav-btn.hidden { /* I added... may not work? */
+  opacity: 0; 
+  pointer-events: none;
+  transform: translateX(-96px);
+}
+
 
 .container {
     padding: 20px;
@@ -286,10 +353,11 @@ padding: 8px 8px 8px 32px;
 .search-bar {
     position: relative;
     top: -20px; left: 130px;
+    width: 1450px;  /* do we want the search bar the same length as the buttons? */
 }
 
 .search-bar input {
-    width: 30%;
+    width: 35%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -298,7 +366,7 @@ padding: 8px 8px 8px 32px;
 
 .dropdown {
     position: absolute;
-    width: 30%;
+    width: 34.8%;
     top: 100%;
     left: 0;
     right: 0;
@@ -322,7 +390,7 @@ padding: 8px 8px 8px 32px;
 
   /* Sidebar */
 .accessibility-options {
-    width: 500px;
+    width: 435px;
     position: relative;
     top: -20px; left: 150px;
     background-color: #f5e7e4;
@@ -331,6 +399,11 @@ padding: 8px 8px 8px 32px;
     flex-direction: column;
     padding: 10px;
     gap: 10px;
+}
+
+.accessibility-options p {
+    color: black;
+    padding-left: 6px;
 }
 
 .accessibility-options button {
@@ -351,7 +424,7 @@ padding: 8px 8px 8px 32px;
 
   /* Map Container */
 .map-container {
-    flex-grow: 1;
+    /*flex-grow: 1;*/
     position: relative;
     overflow: hidden;
 }
@@ -370,9 +443,9 @@ padding: 8px 8px 8px 32px;
   /* Buttons on the right */
 .action-buttons {
     position: fixed;
-    min-width: 60px;
+    width: 64px;
     top: 70px;
-    right: 80px;
+    right: 55px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -393,7 +466,6 @@ padding: 8px 8px 8px 32px;
   font-size: 14px;
 }
 
-
 .action-buttons button:hover {
     background-color: #F2D5DB;
 }
@@ -407,34 +479,37 @@ padding: 8px 8px 8px 32px;
   padding: 10px;
 }
 
-.directions-info {
+.directions-info {  /* white background/card of instructions */
+  background-color: white;
+  /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+  border-radius: 1rem;
+  width: 980px;
+  height: auto;
+  margin: 0 auto; /* Center the card horizontally */
+  padding-bottom: 15px;
+  padding-top: 50px;
+  margin-top: 10px; /* adds gap between map and card*/
+
   text-align: center; /* Centers text */
   display: flex;
   flex-direction: column; /* Stack content */
   align-items: center; /* Centers items horizontally */
   justify-content: center; /* Centers content vertically */
-  padding: 10px;
-}
-
-.directions-info {
-  padding: 1rem;
-  background-color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 1rem;
 }
 
 .route-summary {
   margin-bottom: 1rem;
+  margin-top: -26px;
 }
 
 .route-summary h2 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #374151;
+  color: #2e3238;
 }
 
 .route-summary p {
-  color: #4b5563;
+  color: #2e3238;
 }
 
 .instructions-scrollbox {
@@ -444,7 +519,7 @@ padding: 8px 8px 8px 32px;
 }
 
 .instruction-list {
-  list-style-type: decimal;
+  list-style-type: none;
   padding-left: 1.5rem;
   margin: 0;
 }
