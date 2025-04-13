@@ -6,7 +6,7 @@ import LiveElevationRouteComponent from "./navigation/LiveElevationRoute";
 import LocationTracker from "./utils/LocationTracker";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { faWheelchair } from '@fortawesome/free-solid-svg-icons'
+//import { faWheelchair } from '@fortawesome/free-solid-svg-icons'
 import { faDoorClosed } from '@fortawesome/free-solid-svg-icons'
 import { faMound } from '@fortawesome/free-solid-svg-icons'
 import { faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons'
@@ -323,8 +323,8 @@ function App() {
           <p>Accessibility Options</p>
           <button onClick={() => setRouteType("regular")}>
             <span></span>Reset Options</button>
-          <button onClick={() => setRouteType("wheelchair")}>
-            <span><FontAwesomeIcon icon={faWheelchair}/></span>Wheelchair Accessible</button>
+          {/*<button onClick={() => setRouteType("wheelchair")}>
+            <span><FontAwesomeIcon icon={faWheelchair}/></span>Wheelchair Accessible</button>*/}
           <button onClick={() => setAccessibleDoorEnabled(prev => !prev)}>
             <span><FontAwesomeIcon icon={faDoorClosed}/></span>{accessibleDoorEnabled ? "Accessible Door: On": "Accessible Door: Off"}</button>
           <button onClick={() => setRouteType("lowElevation")}>
