@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState} from "react"
 
-
 const BACKEND_URL = "http://localhost:5000";
 
 /*
@@ -18,7 +17,7 @@ const BACKEND_URL = "http://localhost:5000";
 */
 
 // eslint-disable-next-line react/prop-types
-const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolylineUpdate, userLocation}) => {
+const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolylineUpdate, userLocation, setLoading}) => {
   const lastPositionRef = useRef(null);
   const [steps, setSteps] = useState([]);
   const [elevationChanges, setElevationChanges] = useState([]);
@@ -89,7 +88,6 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolyli
 
     onDirectionsUpdate(null, null, null, [], []);
     onPolylineUpdate([]);
-    // setRouteLoaded(false);
 
     // Check if origin and destination are valid
     // Call the Backend to retrieve the routes based on the origin and destination
@@ -205,7 +203,6 @@ const LiveElevationRouteComponent = ({ destination, onDirectionsUpdate, onPolyli
         })
         .catch((error) => console.error("Error fetching route", error));
       }
-
   },[destination, userLocation]);
 
   

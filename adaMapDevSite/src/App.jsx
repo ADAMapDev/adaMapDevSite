@@ -17,6 +17,7 @@ import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { faRuler } from '@fortawesome/free-solid-svg-icons'
 import wheelchairIcon from "./assets/wheelchair_icon.png"
 
+
 /* Properties of the map */
 const libraries = ["places", "geometry"];
 /* Centers around Kennesaw State */
@@ -51,17 +52,19 @@ function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCreateAccountModalOpen, setIsCreateAccountModalOpen] = useState(false);
   const [apiKey, setApiKey] = useState("");
-  //const [locations, setLocations] = useState([]);
-  const [setLocations] = useState([]);
+  const [locations, setLocations] = useState([]);
 
   const [accessibleDoors, setAccessibleDoors] = useState([]);
   const [accessibleDoorEnabled, setAccessibleDoorEnabled] = useState(false);
+  const [lowElevationEnabled, setLowElevationEnabled] = useState(false);
+  const [loading, setLoading] = useState(true);
+  //const [setLocations] = useState([]);
 
   const BACKEND_URL = "http://localhost:5000";
 
   /* Retrieve API key for map */ 
   useEffect(() => {
-
+    setLoading(true);
     const getApiKey = async () => {
       try {
         const response = await fetch(`${BACKEND_URL}/get-api-key`);
@@ -94,6 +97,8 @@ function App() {
       }
     }
     getAccessibleDoors();
+
+    setLoading(false);
   }, []);
 
   const filteredLocations = locations.filter((location) =>
@@ -230,11 +235,6 @@ function App() {
   /* Renders the route based on what the user has selected in the button */
   const renderRouteComponent = () => {
     switch (routeType) {
-      // case "wheelchair":
-      //   return (
-      //     <LiveWheelchairRouteComponent></LiveWheelchairRouteComponent>
-      //   );
-
       case "lowElevation":
         return (
           <LiveElevationRouteComponent
@@ -256,7 +256,12 @@ function App() {
   }
 
   /* Either throws error loading maps or is in process of loading */
-  if (!apiKey) return <div>Fetching Key</div>
+   if (loading || !apiKey) return (
+    <div className="loading-container">
+      <div className="spinner" />
+      <p>Loading accesible routes...</p>
+    </div>
+  )
 
 
 {/* Side navigation bar */}
@@ -321,14 +326,26 @@ function App() {
         {/* Accessibility Options */}
         <div className="accessibility-options">
           <p>Accessibility Options</p>
-          <button onClick={() => setRouteType("regular")}>
+          <button onClick={() => {
+                  setLowElevationEnabled(false);
+                  setAccessibleDoorEnabled(false);
+                  setRouteType("regular");
+            }}
+          >
             <span></span>Reset Options</button>
           {/*<button onClick={() => setRouteType("wheelchair")}>
             <span><FontAwesomeIcon icon={faWheelchair}/></span>Wheelchair Accessible</button>*/}
           <button onClick={() => setAccessibleDoorEnabled(prev => !prev)}>
             <span><FontAwesomeIcon icon={faDoorClosed}/></span>{accessibleDoorEnabled ? "Accessible Door: On": "Accessible Door: Off"}</button>
-          <button onClick={() => setRouteType("lowElevation")}>
-            <span><FontAwesomeIcon icon={faMound}/></span>Low Elevation Change</button>
+          <button onClick={() => {
+                  setLowElevationEnabled(prev => {
+                    const newVal = !prev;
+                    setRouteType(newVal ? "lowElevation" : "regular");
+                    return newVal;
+                  });
+                }}
+            >
+            <span><FontAwesomeIcon icon={faMound}/></span>{lowElevationEnabled ? "Low Elevation Change: On": "Low Elevation Change: Off"}</button>
         </div>
         <LocationTracker
           onLocationUpdate={setUserLocation}
@@ -389,13 +406,16 @@ function App() {
                     <div>
                       <h3>Accessible Door</h3>
                       <p>Building: {selectedDoor.name}</p>
+                      <img
+                        src={`${BACKEND_URL}/${selectedDoor.image_path}`} alt="Accessible Door" className="building-image"
+                      />
                     </div>
                   </InfoWindow>
                 )}
 
                 {/* Call the respective route to display*/}
                 {showRoute && renderRouteComponent()}
-              {console.log("Rendering polyline with directions:", directions)}
+              {/* {console.log("Rendering polyline with directions:", directions)} */}
               {directions && routeType !== "lowElevation" &&
                 <Polyline 
                   path={directions}
@@ -441,10 +461,9 @@ function App() {
                       <div className="instruction-text" dangerouslySetInnerHTML={{ __html: step.html_instructions }} />
                     </div>
 
-                    <div className="instruction-detail">
-                      Distance: <span>{(step.distance).toFixed(1)} ft</span>
-                    </div>
-
+              <div className="instruction-detail">
+                Distance: <span>{(step.distance).toFixed(1)} ft</span>
+              </div>
                     {routeType === "lowElevation" && (
                       <>
                         <div className="instruction-detail">
@@ -467,7 +486,6 @@ function App() {
               </ol>
             </div>
           </div>
-
  
           {/* Accessibility Features */}    
           {/* Action Buttons */}

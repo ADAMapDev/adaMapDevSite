@@ -40,7 +40,6 @@ const UserRegularRouteComponent = ({destination, onDirectionsUpdate, userLocatio
     lastPositionRef.current = userLocation;
 
     onDirectionsUpdate(null, null, null, [], []);
-
     // Check if origin and destination are valid
     // Call the Backend to retrieve the routes based on the origin and destination
     if (userLocation && destination) {
@@ -62,9 +61,9 @@ const UserRegularRouteComponent = ({destination, onDirectionsUpdate, userLocatio
         })
         .catch((error) => console.error("Error fetching route", error));
       }
-
   },[destination, userLocation]);
 
+  
   return null;
 
 }
