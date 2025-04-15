@@ -16,6 +16,10 @@ import { faMinus } from '@fortawesome/free-solid-svg-icons'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { faRuler } from '@fortawesome/free-solid-svg-icons'
 import wheelchairIcon from "./assets/wheelchair_icon.png"
+import { useNavigate } from "react-router-dom";
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+
 
 
 /* Properties of the map */
@@ -28,6 +32,8 @@ const mapContainerStyle = { /* map size */
 };
 
 function App() {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [highContrast] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -285,7 +291,7 @@ function App() {
    if (loading || !apiKey) return (
     <div className="loading-container">
       <div className="spinner" />
-      <p>Loading accesible routes...</p>
+      <p>Loading accessible routes...</p>
     </div>
   )
 
@@ -558,8 +564,27 @@ function App() {
  
           {/* Accessibility Features */}    
           {/* Action Buttons */}
+          <div className="account-controls">
+            {!isLoggedIn ? (
+              <button onClick={openLoginModal} className="account-button">
+                <FontAwesomeIcon icon={faArrowRightToBracket} /> Login
+              </button>
+            ) : (
+              <>
+                <button onClick={() => navigate("/account")} className="account-button">
+                  <FontAwesomeIcon icon={faUser} /> My Account
+                </button>
+                <button onClick={() => {
+                  setIsLoggedIn(false);
+                  localStorage.removeItem("loggedIn");
+                }} className="account-button logout">
+                  <FontAwesomeIcon icon={faRightFromBracket} /> Logout
+                </button>
+              </>
+            )}
+          </div>
           <div className="action-buttons">
-            <button onClick={openLoginModal}><FontAwesomeIcon icon={faArrowRightToBracket} style={{color: "#000000",}}/>Login</button>
+            {/* <button onClick={openLoginModal}><FontAwesomeIcon icon={faArrowRightToBracket} style={{color: "#000000",}}/>Login</button> */}
             <button onClick={handleZoomIn}><FontAwesomeIcon icon={faPlus} style={{color: "#000000",}}/>Zoom In</button>
             <button onClick={handleZoomOut}><FontAwesomeIcon icon={faMinus} style={{color: "#000000",}}/>Zoom Out</button>
             <button onClick={fetchLocation}><FontAwesomeIcon icon={faLocationArrow} style={{color: "#000000",}}/>Location</button>
@@ -576,7 +601,12 @@ function App() {
               &times;
             </button>
             <h2>Login</h2>
-            <form>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              setIsLoggedIn(true);
+              localStorage.setItem("loggedIn", "true");
+              setIsLoginModalOpen(false);
+            }}>
               <div className="form-group">
                 <label>Username</label>
                 <input type="text" placeholder="Enter your username" />
