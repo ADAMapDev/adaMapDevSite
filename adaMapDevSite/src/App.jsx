@@ -456,8 +456,14 @@ function App() {
                           onSubmit={async (e) => {
                             e.preventDefault();
                             const formData = new FormData();
+                            
+                            if (selectedDoor.id) {
+                              formData.append("door_id", selectedDoor.id);
+                            } else {
+                              console.error("Selected door ID is missing");
+                            }
                             formData.append("image", uploadFile);
-                            formData.append("door_id", selectedDoor.id); // or whatever uniquely identifies the door
+                            
 
                             try {
                               const response = await fetch(`${BACKEND_URL}/upload-door-image`, {
