@@ -239,6 +239,9 @@ def upload_door_image():
 
 @post_images.route("/get-image/<int:door_id>", methods=['GET'])
 def get_door_image(door_id):
+    if not door_id or door_id == 'undefined':
+        return jsonify({"error": "Invalid door ID"}), 400
+
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute(
