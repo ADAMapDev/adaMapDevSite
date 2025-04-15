@@ -59,8 +59,21 @@ function App() {
   const [lowElevationEnabled, setLowElevationEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
   //const [setLocations] = useState([]);
+  const [showUploadForm, setShowUploadForm] = useState(false);
+  const [uploadFile, setUploadFile] = useState(null);
+  const [doorImagePath, setDoorImagePath] = useState(null);
 
   const BACKEND_URL = "http://localhost:5000";
+
+  const getAccessibleDoors = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/accessible-doors`);
+      const data = await response.json();
+      setAccessibleDoors(data);
+    } catch (error) {
+      console.error("Error fetching accessible doors", error)
+    }
+  }
 
   /* Retrieve API key for map */ 
   useEffect(() => {
@@ -87,19 +100,21 @@ function App() {
     }
     getLocations();
 
-    const getAccessibleDoors = async () => {
-      try {
-        const response = await fetch(`${BACKEND_URL}/accessible-doors`);
-        const data = await response.json();
-        setAccessibleDoors(data);
-      } catch (error) {
-        console.error("Error fetching accessible doors", error)
-      }
-    }
     getAccessibleDoors();
-
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (selectedDoor) {
+      const fetchImage = async () => {
+        const data = await fetchDoorImage(selectedDoor.id);
+        if (data.image_path) {
+          setDoorImagePath(`${BACKEND_URL}/${data.image_path}?t=${Date.now()}`);
+        }
+      };
+      fetchImage();
+    }
+  }, [selectedDoor]);
 
   const filteredLocations = locations.filter((location) =>
     location.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -178,7 +193,7 @@ function App() {
     const relatedDoors = accessibleDoors.filter(
       (door) => door.name === location.name
     );
-
+    relatedDoors[0].id;
     setAccessibleDoorLocations(relatedDoors);
   };
 
@@ -228,6 +243,17 @@ function App() {
 
     if (mapRef.current) {
       mapRef.current.fitBounds(latLngBounds);
+    }
+  }
+
+  /* Method to get the door image based on the door id */
+  const fetchDoorImage = async (doorId) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/get-image/${doorId}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching door", error);
     }
   }
 
@@ -389,6 +415,7 @@ function App() {
                 {accessibleDoorEnabled && accessibleDoorLocations.map((door) => (
                   <Marker
                     key={door.id}
+                    // key={index}
                     position={{ lat: door.lat, lng: door.lng}}
                     icon={{
                       url: wheelchairIcon,
@@ -402,13 +429,55 @@ function App() {
                   <InfoWindow
                     position={{ lat: selectedDoor.lat, lng: selectedDoor.lng}}
                     onCloseClick={() => setSelectedDoor(null)}
+                    
                   >
                     <div>
                       <h3>Accessible Door</h3>
                       <p>Building: {selectedDoor.name}</p>
-                      <img
-                        src={`${BACKEND_URL}/${selectedDoor.image_path}`} alt="Accessible Door" className="building-image"
-                      />
+
+                      {selectedDoor.image_path && (
+                        <img
+                            src={doorImagePath} 
+                            alt="Accessible Door" 
+                            style={{ width: '50%', borderRadius: '8px' }}
+                        />
+                      )}
+
+                      <button onClick={() => setShowUploadForm(!showUploadForm)} style={{marginTop: '10px'}}>
+                        {showUploadForm ? "Cancel Upload" : "Upload Image"}
+                      </button>
+                      
+                      {showUploadForm && (
+                        <form
+                          onSubmit={async (e) => {
+                            e.preventDefault();
+                            const formData = new FormData();
+                            formData.append("image", uploadFile);
+                            formData.append("door_id", selectedDoor.id); // or whatever uniquely identifies the door
+
+                            try {
+                              const response = await fetch(`${BACKEND_URL}/upload-door-image`, {
+                                method: "POST",
+                                body: formData,
+                              });
+                  
+                              const data = await response.json();
+                              console.log("Upload successful:", data);
+                  
+                              // You could refetch door data or force an update here
+                              setShowUploadForm(false);
+                              setSelectedDoor(null); 
+                            } catch (err) {
+                              console.error("Upload failed:", err);
+                            }
+                          }}
+                          style={{ marginTop: '10px' }}
+                        >
+                          <input type="file" onChange={(e) => setUploadFile(e.target.files[0])} required />
+                          <button type="submit">Submit</button>
+                        </form>
+                      )}
+
                     </div>
                   </InfoWindow>
                 )}

@@ -34,14 +34,15 @@ def get_buildings():
 def get_accessible_doors():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT name,"
+    cursor.execute("SELECT id,"
+                   "name,"
                    "CAST(lat as FLOAT) as lat, "
                    "CAST(lng as FLOAT) as lng, "
                    "image_path "
                    "FROM accessible_doors;")
     accessible_doors = cursor.fetchall()
     conn.close()
-    return jsonify([{ "name": row[0], "lat": row[1], "lng": row[2], "image_path": row[3]} for row in accessible_doors])
+    return jsonify([{"id": row[0],  "name": row[1], "lat": row[2], "lng": row[3], "image_path": row[4]} for row in accessible_doors])
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -4,14 +4,23 @@ from flask import Flask, request, jsonify, Blueprint
 from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 import os
+from werkzeug.utils import secure_filename
+
+from building_routes import get_db_connection
+
 load_dotenv()
+UPLOAD_FOLDER = os.path.join("static", "doors")
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
 
 get_routes_elevation = Blueprint('/get_route_elevation', __name__)
 get_api_keys = Blueprint('/get_api_key', __name__)
 get_elevations = Blueprint('/get_elevation', __name__)
 get_routes = Blueprint('/get_route', __name__)
+post_images = Blueprint('/upload_image', __name__)
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
 @get_api_keys.route('/get-api-key', methods=['GET'])
 def get_api_key():
@@ -193,6 +202,64 @@ def get_elevation():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 401
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@post_images.route("/upload-door-image", methods=['POST'])
+def upload_door_image():
+    if 'image' not in request.files or 'door_id' not in request.form:
+        return jsonify({"error": "Missing image or door ID"}), 400
+    file = request.files['image']
+    door_id = request.form['door_id']
+
+    if not door_id:
+        return jsonify({'error': 'No door ID'}), 400
+
+    if file.filename == '' or not allowed_file(file.filename):
+        return jsonify({'error': 'Invalid file type'}), 400
+
+    filename = secure_filename(file.filename)
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(file_path)
+
+    relative_path = f"static/doors/{filename}"
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        "UPDATE accessible_doors SET image_path = %s WHERE id = %s ", (relative_path, door_id)
+    )
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return jsonify({'message': 'Image uploaded and path saved!', 'path': relative_path}), 200
+
+@post_images.route("/get-image/<int:door_id>", methods=['GET'])
+def get_door_image(door_id):
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT * FROM accessible_doors WHERE id = %s", (door_id,))
+    door = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    if door is None:
+        return jsonify({"error": "No door found"}), 404
+
+    door_data = {
+        'id': door[0],
+        'name': door[1],
+        'lat': door[2],
+        'lng': door[3],
+        'image_path': door[4],
+    }
+    return jsonify(door_data), 200
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
