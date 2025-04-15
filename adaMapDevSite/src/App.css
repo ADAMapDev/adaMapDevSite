@@ -306,7 +306,7 @@ header {
 .sidebar-indicator.hidden {
   opacity: 0; 
   pointer-events: none;
-  transform: translateX(-96px); /
+  transform: translateX(-96px); 
 }
 
 
