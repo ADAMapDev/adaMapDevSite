@@ -447,16 +447,16 @@ function App() {
                         />
                       )}
 
-                      <button onClick={() => setShowUploadForm(!showUploadForm)} style={{marginTop: '10px'}}>
+                      {/* <button onClick={() => setShowUploadForm(!showUploadForm)} style={{marginTop: '10px'}}>
                         {showUploadForm ? "Cancel Upload" : "Upload Image"}
-                      </button>
+                      </button> */}
                       
                       {showUploadForm && (
                         <form
                           onSubmit={async (e) => {
                             e.preventDefault();
                             const formData = new FormData();
-                            
+
                             if (selectedDoor.id) {
                               formData.append("door_id", selectedDoor.id);
                             } else {
