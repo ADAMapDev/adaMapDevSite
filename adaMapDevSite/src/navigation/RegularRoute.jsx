@@ -1,8 +1,10 @@
 import {useState, useEffect, useRef} from "react"
 import {GoogleMap, Polyline, LoadScript} from "@react-google-maps/api"
+import BACKEND_URL from "./utils/url"
 
-const BACKEND_URL = "http://localhost:5000";
 
+// const BACKEND_URL = "http://localhost:5000";
+// const BACKEND_URL = "https://3391-168-28-186-189.ngrok-free.app"
 /*
 *
 * THIS IS USED TO FIND REGULAR ROUTE

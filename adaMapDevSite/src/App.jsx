@@ -21,6 +21,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 
+import BACKEND_URL from "./utils/url"
 
 /* Properties of the map */
 const libraries = ["places", "geometry"];
@@ -59,17 +60,14 @@ function App() {
   const [isCreateAccountModalOpen, setIsCreateAccountModalOpen] = useState(false);
   const [apiKey, setApiKey] = useState("");
   const [locations, setLocations] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const [accessibleDoors, setAccessibleDoors] = useState([]);
   const [accessibleDoorEnabled, setAccessibleDoorEnabled] = useState(false);
-  const [lowElevationEnabled, setLowElevationEnabled] = useState(false);
-  const [loading, setLoading] = useState(true);
-  //const [setLocations] = useState([]);
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [uploadFile, setUploadFile] = useState(null);
   const [doorImagePath, setDoorImagePath] = useState(null);
+  const [lowElevationEnabled, setLowElevationEnabled] = useState(false);
 
-  const BACKEND_URL = "http://localhost:5000";
 
   const getAccessibleDoors = async () => {
     try {
