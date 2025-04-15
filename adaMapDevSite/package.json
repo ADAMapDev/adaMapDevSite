@@ -21,7 +21,8 @@
     "react-accessible-dropdown": "^1.0.2",
     "react-dom": "^19.0.0",
     "react-fontawesome-svg-icon": "^1.1.2",
-    "react-leaflet": "^5.0.0"
+    "react-leaflet": "^5.0.0",
+    "react-router-dom": "^7.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
