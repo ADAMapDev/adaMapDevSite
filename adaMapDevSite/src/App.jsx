@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./App.css";
 import { GoogleMap, InfoWindow, LoadScript, Marker, Polyline } from "@react-google-maps/api";
 import UserRegularRouteComponent from "./navigation/UserRegularRoute";
@@ -16,6 +17,10 @@ import { faMinus } from '@fortawesome/free-solid-svg-icons'
 import { faClock } from '@fortawesome/free-solid-svg-icons'
 import { faRuler } from '@fortawesome/free-solid-svg-icons'
 import wheelchairIcon from "./assets/wheelchair_icon.png"
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+
+
 
 
 /* Properties of the map */
@@ -26,8 +31,8 @@ const mapContainerStyle = { /* map size */
   width: "1000px",
   height: "600px"
 };
-
 function App() {
+  const navigate = useNavigate();
   const [highContrast] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -51,6 +56,7 @@ function App() {
   const [polylineSegments, setPolylineSegments] = useState([]);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isCreateAccountModalOpen, setIsCreateAccountModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Added state for login status
   const [apiKey, setApiKey] = useState("");
   const [locations, setLocations] = useState([]);
 
@@ -76,6 +82,7 @@ function App() {
     };
     getApiKey();
 
+    
     const getLocations = async () => {
       try {
         const response = await fetch(`${BACKEND_URL}/buildings`);
@@ -97,9 +104,10 @@ function App() {
       }
     }
     getAccessibleDoors();
-
     setLoading(false);
   }, []);
+
+
 
   const filteredLocations = locations.filter((location) =>
     location.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -259,7 +267,7 @@ function App() {
    if (loading || !apiKey) return (
     <div className="loading-container">
       <div className="spinner" />
-      <p>Loading accesible routes...</p>
+      <p>Loading accessible routes...</p>
     </div>
   )
 
@@ -489,8 +497,27 @@ function App() {
  
           {/* Accessibility Features */}    
           {/* Action Buttons */}
+          <div className="account-controls">
+            {!isLoggedIn ? (
+              <button onClick={openLoginModal} className="account-button">
+                <FontAwesomeIcon icon={faArrowRightToBracket} /> Login
+              </button>
+            ) : (
+              <>
+                <button onClick={() => navigate("/account")} className="account-button">
+                  <FontAwesomeIcon icon={faUser} /> My Account
+                </button>
+                <button onClick={() => {
+                  setIsLoggedIn(false);
+                  localStorage.removeItem("loggedIn");
+                }} className="account-button logout">
+                  <FontAwesomeIcon icon={faRightFromBracket} /> Logout
+                </button>
+              </>
+            )}
+          </div>
+
           <div className="action-buttons">
-            <button onClick={openLoginModal}><FontAwesomeIcon icon={faArrowRightToBracket} style={{color: "#000000",}}/>Login</button>
             <button onClick={handleZoomIn}><FontAwesomeIcon icon={faPlus} style={{color: "#000000",}}/>Zoom In</button>
             <button onClick={handleZoomOut}><FontAwesomeIcon icon={faMinus} style={{color: "#000000",}}/>Zoom Out</button>
             <button onClick={fetchLocation}><FontAwesomeIcon icon={faLocationArrow} style={{color: "#000000",}}/>Location</button>
@@ -507,7 +534,12 @@ function App() {
               &times;
             </button>
             <h2>Login</h2>
-            <form>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              setIsLoggedIn(true);
+              localStorage.setItem("loggedIn", "true");
+              setIsLoginModalOpen(false);
+            }}>
               <div className="form-group">
                 <label>Username</label>
                 <input type="text" placeholder="Enter your username" />
