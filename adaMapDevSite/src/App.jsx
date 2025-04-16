@@ -447,9 +447,9 @@ function App() {
                         />
                       )}
 
-                      {/* <button onClick={() => setShowUploadForm(!showUploadForm)} style={{marginTop: '10px'}}>
+                      <button onClick={() => setShowUploadForm(!showUploadForm)} style={{marginTop: '10px'}}>
                         {showUploadForm ? "Cancel Upload" : "Upload Image"}
-                      </button> */}
+                      </button>
                       
                       {showUploadForm && (
                         <form
