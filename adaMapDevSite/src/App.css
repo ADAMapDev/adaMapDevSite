@@ -693,7 +693,7 @@ header {
   right: 40px;
   display: flex;
   gap: 0.5rem;
-  z-index: 1000; /* keep it on top of the map */
+  /*z-index: 1000; /* keep it on top of the map */
 }
 
 
@@ -839,12 +839,22 @@ header {
 }
 
 
-/* For medium-sized Mobile Screens (568px-768px) */
+/* For medium-sized Mobile Screens (568px-768px) */   /* HERE */
 @media only screen and (max-width: 768px) {
   /* this is the 3line button, 'hamburger' icon */
   .open-nav-btn {
-    margin-left: 0.5rem;
+    margin-left: 0.3rem;    
   }
+
+  .search-bar, .accessibility-options {
+    position: relative;
+    left: 10rem;
+    width: 15rem;
+  }
+
+
+
+
 }
 
 
