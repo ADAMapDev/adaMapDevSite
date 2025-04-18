@@ -841,32 +841,37 @@ header {
 
 /* For medium-sized Mobile Screens (568px-768px) */   /* HERE */
 @media only screen and (max-width: 768px) {
+
+  /* Sidebar Indicator, shown initially before opening */
+  .sidebar-indicator {
+    width: 50rem;
+  }
+
   /* this is the 3line button, 'hamburger' icon */
   .open-nav-btn {
-    margin-left: 0rem;    /* used to be 0.3 */
+    margin-left: -1rem;    /* used to be 0.3 */
   }
 
   .search-bar {
     position: relative;
     left: 5rem;
     width: 15rem;
-  }
-
-  .search-bar {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
   }
 
   .accessibility-options {
     position: relative;
-    left: 5rem;
-    width: 15rem;
+    left: 6rem;
+    width: 17rem;
   }
 
+  .action-buttons {
+    width: 4.2rem;
+  }
 
+  .map-placeholder {
+    width: 50%;
+    height: 100%;
+  }
 
 
 }
