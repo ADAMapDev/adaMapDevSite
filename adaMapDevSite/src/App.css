@@ -841,7 +841,6 @@ header {
 
 /* For medium-sized Mobile Screens (568px-768px) */   /* HERE */
 @media only screen and (max-width: 768px) {
-
   /* Sidebar Indicator, shown initially before opening */
   .sidebar-indicator {
     width: 4rem;
@@ -850,35 +849,46 @@ header {
   .open-nav-btn {
     margin-left: -0.7rem;    /* used to be -1 */
   }
+  .action-buttons {
+    width: 4.3rem;
+    right: 1rem; /* pulls further right */
+  }
 
   /* DO NOT TOUCH ABOVE THIS LINE */
 
+
+  html, body {  /* adds horizontal scroll bar (only temporary) */
+    overflow-x: scroll;
+  }
+
   .account-controls {
-    top: 0;
+    top: 1rem;
     right: 1rem;
   }
 
   .search-bar {
     position: relative;
     left: 5rem;
-    width: 100rem;
+    width: 90rem;
   }
 
-  .accessibility-options {
+  .accessibility-options {        /* shrink the physical size */
     position: relative;
     left: 6rem;
     width: 30rem; /* used to be 17rem */
   }
 
-  .action-buttons {
-    width: 4.3rem;
-    right: 1rem; /* pulls further right */
-  }
-
+  /*
   .map-placeholder {
     width: 90%;
     height: 100%;
-    left: 40rem;  /* used to be 15rem */
+    padding-left: 40rem;  /* used to be 15rem */
+  /*}*/
+
+  .map-container {
+    width: 90%;
+    height: 100%;
+    padding-left: 40rem;  /* used to be 15rem */
   }
 
 
