@@ -844,7 +844,7 @@ header {
 
   /* Sidebar Indicator, shown initially before opening */
   .sidebar-indicator {
-    width: 2rem;
+    width: 4rem;
   }
 
   /* this is the 3line button, 'hamburger' icon */
@@ -855,7 +855,7 @@ header {
   .search-bar {
     position: relative;
     left: 5rem;
-    width: 15rem;
+    width: 23rem;
   }
 
   .accessibility-options {
@@ -866,11 +866,13 @@ header {
 
   .action-buttons {
     width: 4.2rem;
+    right: -1.5rem; /* pulls further right */
   }
 
   .map-placeholder {
-    width: 50%;
+    width: 90%;
     height: 100%;
+    left: 7rem;
   }
 
 
