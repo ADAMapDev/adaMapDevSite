@@ -844,7 +844,7 @@ header {
 
   /* Sidebar Indicator, shown initially before opening */
   .sidebar-indicator {
-    width: 50rem;
+    width: 2rem;
   }
 
   /* this is the 3line button, 'hamburger' icon */
