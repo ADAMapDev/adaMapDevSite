@@ -421,6 +421,7 @@ header {
     align-items: center;
     gap: 10px;
     font-size: 1rem;
+    color: #000000; /* black text, for mobile */
 }
 
 .accessibility-options button:hover {
@@ -448,7 +449,7 @@ header {
   /* Buttons on the right */
 .action-buttons {
     position: fixed;
-    width: 4rem;
+    width: 4.1rem;
     top: 6.5rem;
     right: 3.5rem;
     
@@ -467,12 +468,13 @@ header {
   border-radius: 5px;
   cursor: pointer;
   display: flex;
-  flex-direction: column;  
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 5px;
   text-align: center;
   font-size: 14px;
+  color: #000000; /* black text, for mobile */
 }
 
 .action-buttons button:hover {
@@ -835,3 +837,14 @@ header {
   border: 3px solid #665155;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+
+/* For medium-sized Mobile Screens (568px-768px) */
+@media only screen and (max-width: 768px) {
+  /* this is the 3line button, 'hamburger' icon */
+  .open-nav-btn {
+    margin-left: 0.5rem;
+  }
+}
+
+
