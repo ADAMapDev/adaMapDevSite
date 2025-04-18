@@ -330,8 +330,12 @@ header {
     transition: opacity 0.5s ease, transform 0.5s ease, color 0.5s ease;
     background-color: transparent;
     border-color: transparent;
-    margin-left: 14px;
-    margin-top: 13px;
+    
+    margin-left: 1rem;
+    margin-top: 1rem;
+
+    /*margin-left: 14px;
+    margin-top: 13px;*/
 }
 .open-nav-btn:hover {
   color: #2e3238; 
@@ -416,6 +420,7 @@ header {
     display: flex;
     align-items: center;
     gap: 10px;
+    font-size: 1rem;
 }
 
 .accessibility-options button:hover {
@@ -443,9 +448,13 @@ header {
   /* Buttons on the right */
 .action-buttons {
     position: fixed;
-    width: 64px;
+    width: 4rem;
+    top: 6.5rem;
+    right: 3.5rem;
+    
+    /*width: 64px;
     top: 100px;
-    right: 55px;
+    right: 55px;*/
     display: flex;
     flex-direction: column;
     gap: 10px;
