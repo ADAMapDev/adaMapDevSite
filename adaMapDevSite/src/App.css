@@ -849,10 +849,15 @@ header {
   .open-nav-btn {
     margin-left: -0.7rem;    /* used to be -1 */
   }
+  .account-controls {
+    top: 1.2rem;  /* used to be 1rem */
+    right: 1rem;
+  }
   .action-buttons {
     width: 4.3rem;
     right: 1rem; /* pulls further right */
   }
+
 
   /* DO NOT TOUCH ABOVE THIS LINE */
 
@@ -861,21 +866,16 @@ header {
     overflow-x: scroll;
   }
 
-  .account-controls {
-    top: 1rem;
-    right: 1rem;
-  }
-
   .search-bar {
     position: relative;
     left: 5rem;
-    width: 90rem;
+    width: 50rem; /* used to be 90rem */
   }
 
   .accessibility-options {        /* shrink the physical size */
     position: relative;
     left: 6rem;
-    width: 30rem; /* used to be 17rem */
+    width: 15rem; /* used to be 17rem */
   }
 
   /*
@@ -888,7 +888,7 @@ header {
   .map-container {
     width: 90%;
     height: 100%;
-    padding-left: 40rem;  /* used to be 15rem */
+    padding-left: 10rem;  /* used to be 15rem */
   }
 
 
