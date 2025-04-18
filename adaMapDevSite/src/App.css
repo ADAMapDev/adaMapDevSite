@@ -849,7 +849,12 @@ header {
 
   /* this is the 3line button, 'hamburger' icon */
   .open-nav-btn {
-    margin-left: -1rem;    /* used to be 0.3 */
+    margin-left: -0.7rem;    /* used to be -1 */
+  }
+
+  .account-controls {
+    top: 5rem;
+    right: 5rem;
   }
 
   .search-bar {
@@ -861,18 +866,18 @@ header {
   .accessibility-options {
     position: relative;
     left: 6rem;
-    width: 17rem;
+    width: 30rem; /* used to be 17rem */
   }
 
   .action-buttons {
     width: 4.2rem;
-    right: -1.5rem; /* pulls further right */
+    right: -0.7rem; /* pulls further right */
   }
 
   .map-placeholder {
-    width: 90%;
+    width: 85%;
     height: 100%;
-    left: 7rem;
+    left: 15rem;
   }
 
 
