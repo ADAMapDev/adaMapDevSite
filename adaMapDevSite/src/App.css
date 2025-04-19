@@ -877,7 +877,7 @@ header {
   }
 
   .open-nav-btn {
-    font-size: 2rem;  /* font-size: 30px; */
+    font-size: 1.5rem;  /* font-size: 30px; , 2 is decent*/
   }
 
   .search-bar {
@@ -886,7 +886,7 @@ header {
     /* was 3rem */
 
     width: 50rem; /* used to be 90rem */
-    top: -7rem; /* touched*/
+    top: -25rem; /* touched, was -7*/
   }
 
   .accessibility-options {        /* shrink the physical size */
@@ -910,8 +910,8 @@ header {
   .map-container {
     width: 90%;
     height: 100%;
-    padding-left: 1.5rem;  /* when sidebar, 5rem */
-    /* touched, was 4, then 3*/
+    padding-left: 1.2rem;  /* when sidebar, 5rem */
+    /* touched, was 4, then 3, then 1, then 1.5*/
   }
 
 
