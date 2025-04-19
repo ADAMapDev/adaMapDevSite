@@ -857,6 +857,14 @@ header {
     width: 4.3rem;
     right: 1rem; /* pulls further right */
   }
+  .accessibility-options {        /* shrink the physical size */
+    position: relative;
+    left: 6rem;
+    width: 15rem; /* used to be 17rem */
+  }
+  .accessibility-options button {
+    font-size: 0.8rem;  /* used to be 1rem */
+  }
 
 
   /* DO NOT TOUCH ABOVE THIS LINE */
@@ -865,6 +873,10 @@ header {
   html, body {  /* adds horizontal scroll bar (only temporary) */
     overflow-x: scroll;
   }
+  
+  .sidebar-indicator {    /* makes it invisible because it's too big to have */
+    color: transparent;
+  }
 
   .search-bar {
     position: relative;
@@ -872,18 +884,9 @@ header {
     width: 50rem; /* used to be 90rem */
   }
 
-  .accessibility-options {        /* shrink the physical size */
-    position: relative;
-    left: 6rem;
-    width: 15rem; /* used to be 17rem */
-  }
-
-  .accessibility-options button {
-    font-size: 0.8rem;  /* used to be 1rem */
-  }
-
   .action-buttons button {
     font-size: 0.8rem;  /* used to be font-size: 14px;*/
+    height: 1rem;   /* testing */
   }
 
   /*
