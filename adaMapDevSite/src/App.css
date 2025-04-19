@@ -879,11 +879,11 @@ header {
   }
 
   .accessibility-options button {
-    font-size: 0.5rem;  /* used to be 1rem */
+    font-size: 0.8rem;  /* used to be 1rem */
   }
 
   .action-buttons button {
-    font-size: 2rem;  /* used to be font-size: 14px;*/
+    font-size: 0.8rem;  /* used to be font-size: 14px;*/
   }
 
   /*
