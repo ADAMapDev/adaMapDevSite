@@ -875,7 +875,7 @@ header {
   }
   
   .sidebar-indicator {    /* makes it invisible because it's too big to have */
-    color: transparent;
+    background-color: transparent;
   }
 
   .search-bar {
@@ -886,7 +886,7 @@ header {
 
   .action-buttons button {
     font-size: 0.8rem;  /* used to be font-size: 14px;*/
-    height: 1rem;   /* testing */
+    height: 10rem;   /* testing */ /* used to be 1rem */
   }
 
   /*
