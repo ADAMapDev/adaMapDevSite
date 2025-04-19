@@ -888,7 +888,7 @@ header {
 
   .action-buttons button {
     font-size: 0.8rem;  /* used to be font-size: 14px;*/
-    height: 4rem;   /* testing */ /* used to be 5rem */
+    height: 4.5rem;   /* testing */ /* used to be 5rem */
     /*height: 5rem;   /* looks good, for web? all same size*/
   }
 
@@ -902,10 +902,7 @@ header {
   .map-container {
     width: 90%;
     height: 100%;
-    /*padding-left: 4rem;  /* when sidebar, 5rem */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-left: 4rem;  /* when sidebar, 5rem */
   }
 
 
