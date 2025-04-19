@@ -889,12 +889,14 @@ header {
     /* was 3rem, then 2 */
 
     width: 50rem; /* used to be 90rem */
-    top: 7rem; /* touched, then 15*/
+    top: 2rem; /* touched, 15rem, then 7*/
   }
 
   .accessibility-options {        /* shrink the physical size */
     left: 2rem;   /* when sidebar, 6rem */
     /* was 4rem, then 3 */
+
+    width: 6rem;
   }
 
   .action-buttons button {
