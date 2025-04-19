@@ -850,6 +850,7 @@ header {
   .open-nav-btn {
     margin-left: -0.7rem;    /* used to be -1 */
     color: #6d5257;
+    font-size: 1.8rem;  /* font-size: 30px; , 2 is decent, 1.5 is iffy*/
   }
   .account-controls {
     top: 1.2rem;  /* used to be 1rem */
@@ -882,17 +883,13 @@ header {
     overflow-x: scroll;
   }
 
-  .open-nav-btn {
-    font-size: 1.8rem;  /* font-size: 30px; , 2 is decent, 1.5 is iffy*/
-  }
-
   .search-bar {
     position: relative;
-    left: 2rem;   /* when sidebar, 5rem */
-    /* was 3rem */
+    left: 1rem;   /* when sidebar, 5rem */
+    /* was 3rem, then 2 */
 
     width: 50rem; /* used to be 90rem */
-    top: 15rem; /* touched, was -7, then -25*/
+    top: 7rem; /* touched, then 15*/
   }
 
   .accessibility-options {        /* shrink the physical size */
