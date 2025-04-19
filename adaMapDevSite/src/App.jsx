@@ -332,7 +332,7 @@ function App() {
           <div className="search-bar" ref={searchBarRef}>
             <input
               type="text"
-              placeholder="Search for a place or an address"
+              placeholder="Search for a campus building"
               value={searchQuery}
               onChange={handleSearchChange}
               onFocus={() => setShowDropdown(true)}

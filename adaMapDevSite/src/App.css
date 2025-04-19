@@ -878,6 +878,14 @@ header {
     width: 15rem; /* used to be 17rem */
   }
 
+  .accessibility-options button {
+    font-size: 0.5rem;  /* used to be 1rem */
+  }
+
+  .action-buttons button {
+    font-size: 2rem;  /* used to be font-size: 14px;*/
+  }
+
   /*
   .map-placeholder {
     width: 90%;
@@ -888,7 +896,7 @@ header {
   .map-container {
     width: 90%;
     height: 100%;
-    padding-left: 10rem;  /* used to be 15rem */
+    padding-left: 5rem;  /* used to be 7rem */
   }
 
 
