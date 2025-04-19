@@ -853,7 +853,7 @@ header {
     font-size: 1.8rem;  /* font-size: 30px; , 2 is decent, 1.5 is iffy*/
   }
   .account-controls {
-    top: 1.2rem;  /* used to be 1rem */
+    top: 1.1rem;  /* used to be 1.2rem */
     right: 1rem;
   }
   .action-buttons {
@@ -889,14 +889,14 @@ header {
     /* was 3rem, then 2 */
 
     width: 50rem; /* used to be 90rem */
-    top: 2rem; /* touched, 15rem, then 7*/
+    top: 1rem; /* touched, 15rem, then 7*/
   }
 
   .accessibility-options {        /* shrink the physical size */
     left: 2rem;   /* when sidebar, 6rem */
     /* was 4rem, then 3 */
 
-    width: 6rem;
+    width: 10rem; /* was 6rem*/
   }
 
   .action-buttons button {
