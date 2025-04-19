@@ -844,10 +844,12 @@ header {
   /* Sidebar Indicator, shown initially before opening */
   .sidebar-indicator {
     width: 4rem;
+    background-color: transparent;  /* makes it invisible because it's too big to have */
   }
   /* this is the 3line button, 'hamburger' icon */
   .open-nav-btn {
     margin-left: -0.7rem;    /* used to be -1 */
+    color: #6d5257;
   }
   .account-controls {
     top: 1.2rem;  /* used to be 1rem */
@@ -859,7 +861,7 @@ header {
   }
   .accessibility-options {        /* shrink the physical size */
     position: relative;
-    left: 6rem;
+    left: 6rem;   /* when sidebar, 6rem */
     width: 15rem; /* used to be 17rem */
   }
   .accessibility-options button {
@@ -873,20 +875,20 @@ header {
   html, body {  /* adds horizontal scroll bar (only temporary) */
     overflow-x: scroll;
   }
-  
-  .sidebar-indicator {    /* makes it invisible because it's too big to have */
-    background-color: transparent;
-  }
 
   .search-bar {
     position: relative;
-    left: 5rem;
+    left: 4rem;   /* when sidebar, 5rem */
     width: 50rem; /* used to be 90rem */
+  }
+
+  .accessibility-options {        /* shrink the physical size */
+    left: 5rem;   /* when sidebar, 6rem */
   }
 
   .action-buttons button {
     font-size: 0.8rem;  /* used to be font-size: 14px;*/
-    height: 10rem;   /* testing */ /* used to be 1rem */
+    height: 5rem;   /* testing */ /* used to be 1rem */
   }
 
   /*
@@ -899,7 +901,7 @@ header {
   .map-container {
     width: 90%;
     height: 100%;
-    padding-left: 5rem;  /* used to be 7rem */
+    padding-left: 4rem;  /* when sidebar, 5rem */
   }
 
 
