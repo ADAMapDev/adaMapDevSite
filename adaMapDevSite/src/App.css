@@ -860,6 +860,11 @@ header {
     width: 4.3rem;
     right: 1rem; /* pulls further right */
   }
+  .action-buttons button {
+    font-size: 0.8rem;  /* used to be font-size: 14px;*/
+    height: 4.5rem;
+    /*height: 5rem;   /* looks good, for web? all same size*/
+  }
 
 
   .accessibility-options button {
@@ -883,10 +888,8 @@ header {
   .search-bar {
     position: relative;
     left: 1rem;   /* when sidebar, 5rem */
-    /* was 3rem, then 2 */
-
-    width: 50rem; /* used to be 90rem */
-    top: -1; /* touched, 15rem, then 7, then 1rem, then 0*/
+    width: 50rem;
+    top: -0.5; /* touched, 15rem, then 7, then 1rem, then 0, then -1*/
   }
 
   .accessibility-options {        /* shrink the physical size */
@@ -896,15 +899,9 @@ header {
   }
 
   .accessibility-options p {
-    top: 0.5;
-    bottom: 0.5;
+    top: 0;
+    bottom: 0;
 }
-
-  .action-buttons button {
-    font-size: 0.8rem;  /* used to be font-size: 14px;*/
-    height: 4.5rem;   /* testing */ /* used to be 5rem */
-    /*height: 5rem;   /* looks good, for web? all same size*/
-  }
 
 
 }
