@@ -613,13 +613,13 @@ function App() {
             }}>
               <div className="form-group">
                 <label>Username</label>
-                <input type="text" placeholder="Enter your username" />
+                <input type="text" name="loginUsername" placeholder="Enter your username" />
               </div>
               <div className="form-group">
                 <label>Password</label>
-                <input type="password" placeholder="Enter your password" />
+                <input type="password" name="loginPassword" placeholder="Enter your password" />
               </div>
-              <button type="submit" className="submit-btn">
+              <button type="submit" name="loginForm" className="submit-btn">
                 Login
               </button>
             </form>
@@ -646,17 +646,17 @@ function App() {
             <form>
               <div className="form-group">
                 <label>Username</label>
-                <input type="text" placeholder="Enter your username" />
+                <input type="text" name="createUsername" placeholder="Enter your username" />
               </div>
               <div className="form-group">
                 <label>Email</label>
-                <input type="email" placeholder="Enter your email" />
+                <input type="email" name="createEmail" placeholder="Enter your email" />
               </div>
               <div className="form-group">
                 <label>Password</label>
-                <input type="password" placeholder="Enter your password" />
+                <input type="password" name="createPassword" placeholder="Enter your password" />
               </div>
-              <button type="submit" className="submit-btn">
+              <button type="submit" name="createForm" className="submit-btn">
                 Create Account
               </button>
             </form>
