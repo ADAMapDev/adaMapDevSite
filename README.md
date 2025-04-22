@@ -14,7 +14,7 @@ readme.md formatting syntax link: https://docs.github.com/en/get-started/writing
 ## Technical Stack
 - frontend: React.js
 - backend: Flask
-- database: SQL server for user data and preferences
+- database: PostgreSQL
 - APIs/Libraries: Google Maps API
 
 ## System Architecture:
@@ -34,6 +34,17 @@ details on how the application meets accessibility standards ((WCAG 2.1) and the
 
 ## Learning Objective
 - how the project meets learning objectives, such as designing real world situations and incorporating best practices
+
+## Local Setup
+1. Clone the repo
+2. Backend:
+  - `cd adaMapBackend`
+  - `pip install -r requirements.txt`
+  - `flask run`
+3. Frontend:
+  - `cd adaMapDevSite`
+  - `npm install`
+  - `npm run dev`
 
 ## Contributors
 Spencer Williams: Team Leader, Documentation
