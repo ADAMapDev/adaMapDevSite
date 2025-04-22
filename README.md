@@ -17,9 +17,6 @@
 ## System Architecture:
 in-depth overview of the application's architecture (frontend, backend, database, external API integrations)
 
-## Installation and Setup
-step-by-step on how to use the application such as selecting points on the map, viewing routes, managing user preferences etc
-
 ## Accessibility
 details on how the application meets accessibility standards ((WCAG 2.1) and the features provided for users with disabilities
 
