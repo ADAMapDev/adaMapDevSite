@@ -904,7 +904,8 @@ header {
   }*/
 
   .route-summary h2 {
-    left: -10rem;
+    position: relative;
+    left: 1rem;
   }
 
   /*.instructions-scrollbox {
@@ -912,7 +913,8 @@ header {
   }*/
 
   .instruction-list {
-    left: -10rem;
+    position: relative;
+    left: 1rem;
   }
 
 
