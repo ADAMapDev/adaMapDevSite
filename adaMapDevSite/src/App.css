@@ -889,7 +889,7 @@ header {
     position: relative;
     left: 1rem;   /* when sidebar, 5rem */
     width: 50rem;
-    top: -0.5; /* touched, 15rem, then 7, then 1rem, then 0, then -1*/
+    top: -1; /* touched, 15rem, then 7, then 1rem, then 0, then -1*/
   }
 
   .accessibility-options {        /* shrink the physical size */
@@ -898,10 +898,14 @@ header {
     width: 15rem; /* used to be 10, 17rem */
   }
 
-  .accessibility-options p {
-    top: 0;
-    bottom: 0;
-}
+  .route-summary {
+    left: 1rem;
+  }
+
+  .instructions-scrollbox {
+    left: 1rem;
+  }
+
 
 
 }
