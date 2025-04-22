@@ -898,14 +898,22 @@ header {
     width: 15rem; /* used to be 10, 17rem */
   }
 
+  /*
   .route-summary {
-    left: -10rem; /* used to be 1rem */
-  }
+    left: -10rem; /* used to be 1rem
+  }*/
 
-  .instructions-scrollbox {
+  .route-summary h2 {
     left: -10rem;
   }
 
+  /*.instructions-scrollbox {
+    left: -10rem;
+  }*/
+
+  .instruction-list {
+    left: -10rem;
+  }
 
 
 }
