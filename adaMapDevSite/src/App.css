@@ -899,11 +899,11 @@ header {
   }
 
   .route-summary {
-    left: 1rem;
+    left: -10rem; /* used to be 1rem */
   }
 
   .instructions-scrollbox {
-    left: 1rem;
+    left: -10rem;
   }
 
 
